@@ -1,9 +1,9 @@
 version: "3.9"
 services:
   database:
-    image: mysql:8.3.0
+    image: mysql:8.0.36
     volumes:
-      - "./moovsmart_sprint1.sql:/docker-entrypoint-initdb.d/moovsmart_sprint1.sql"
+       - "./:/docker-entrypoint-initdb.d"
     container_name: database
     restart: unless-stopped
     environment:
@@ -12,13 +12,12 @@ services:
     ports:
       - "3306:3306"
     healthcheck:
-#      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
-      test: mysqladmin ping -h 127.0.0.1 -u root --password=test1234
-      timeout: 30s
-      retries: 10
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      timeout: 20s
+      retries: 5
 
   backend:
-    image: csineva/moovsmart-backend:sprint-1
+    image: csineva/ingatlan-backend:sprint-1
     container_name: backend
     depends_on:
       database:
@@ -26,12 +25,11 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/moovsmart?serverTimezone=UTC&characterEncoding=utf8
+      - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/moovsmart?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&createDatabaseIfNotExist=true
   frontend:
-    image: csineva/moovsmart-frontend:sprint-1
+    image: lenartl/ingatlan-frontend:sprint-1
     container_name: frontend
     ports:
       - "4200:4200"
     depends_on:
       - backend
-

@@ -1,4 +1,4 @@
-from sprint1.POM_registration.general_page import GeneralPage
+from sprint1.POM.general_page import GeneralPage
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as EC

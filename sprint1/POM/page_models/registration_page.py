@@ -35,3 +35,30 @@ class RegistrationPage(GeneralPage):
     def button_registration(self):
         return self.wait.until(EC.element_to_be_clickable((By.XPATH, "(//button[@class='btn'])[2]")))
 
+
+##################ERROR MESSAGES#################################x
+
+    def error_last_name(self):
+        return self.wait.until(EC.element_to_be_clickable((By.XPATH, "//div[1]/small")))
+
+    def error_first_name(self):
+        return self.wait.until(EC.element_to_be_clickable((By.XPATH, "//div[2]/small")))
+
+    def error_phone_number(self):
+        return self.wait.until(EC.element_to_be_clickable((By.XPATH, "//div[3]/small")))
+
+    def error_email_missing(self):
+        return self.wait.until(EC.element_to_be_clickable((By.XPATH, "//div[4]/small")))
+
+    def error_email_wrong_format(self):
+        return self.wait.until(EC.element_to_be_clickable((By.XPATH, "//div[4]/small[2]")))
+
+    def error_confirm_email_missing(self):
+        return self.wait.until(EC.element_to_be_clickable((By.XPATH, "//div[5]/small")))
+
+    def error_password(self):
+        return self.wait.until(EC.element_to_be_clickable((By.XPATH, "//div[6]/small")))
+
+    def error_confirm_password(self):
+        return self.wait.until(EC.element_to_be_clickable((By.XPATH, "//div[7]/small")))
+

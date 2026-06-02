@@ -1,11 +1,11 @@
 TESTUSER = [
     ##### valid registration + with same email
     {
-    "lastname": "Elemér",
+    "lastname": "Elek",
     "firstname": "Teszt",
     "phone_number": "+91123456789",
-    "email": "test@ele.hu",
-    "email_confirm": "test@ele.hu",
+    "email": "test@elek.hu",
+    "email_confirm": "test@elek.hu",
     "password": "1234_Abcd",
     "password_confirm": "1234_Abcd"
 },
@@ -14,8 +14,8 @@ TESTUSER = [
     "lastname": "456",
     "firstname": "123",
     "phone_number": "abcd",
-    "email": "test@belek.hu",
-    "email_confirm": "test@belek.hu",
+    "email": "test@eleke.hu",
+    "email_confirm": "test@eleke.hu",
     "password": "1234_Abcd",
     "password_confirm": "1234_Abcd"
 },

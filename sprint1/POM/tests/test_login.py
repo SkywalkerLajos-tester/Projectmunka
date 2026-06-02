@@ -1,10 +1,10 @@
 import pytest
 import allure
 
-from sprint1.POM.page_models.main_page import MoovSmartMain
-from sprint1.POM.page_models.registration_page import RegistrationPage
-from sprint1.POM.page_models.login_page import LoginPage
-from sprint1.POM.page_models.logged_in_page import LoggedIn
+from sprint1.POM.page_models.main_page_z import MoovSmartMain
+from sprint1.POM.page_models.registration_page_z import RegistrationPage
+from sprint1.POM.page_models.login_page_z import LoginPage
+from sprint1.POM.page_models.logged_in_page_z import LoggedIn
 from sprint1.POM.create_driver import get_configured_chrome_driver
 from sprint1.POM.testdata.testurls import BASE_URL
 
@@ -16,10 +16,10 @@ class TestLogin:
         self.login_page = LoginPage(self.browser, BASE_URL)
         self.logged_in_page = LoggedIn(self.browser, BASE_URL)
 
-    # def teardown_method(self):
-    #     self.main_page.close_browser()
+    def teardown_method(self):
+        self.main_page.close_browser()
 
-    @allure.title("Bejelentkezés tesztelése")
+    @allure.title("Bejelentkezés valid")
     @allure.description("Bejelentkezés - happy path")
     @allure.severity(allure.severity_level.CRITICAL)
     def test_login_valid(self):
@@ -35,7 +35,7 @@ class TestLogin:
         signed_in_text = signed_in.text
         assert signed_in_text == "Kijelentkezés"
 
-    @allure.title("Bejelentkezés tesztelése")
+    @allure.title("Bejelentkezés email cím megadása nélkül")
     @allure.description("Bejelentkezés - email cím megadása nélkül")
     @allure.severity(allure.severity_level.CRITICAL)
     def test_login_without_email(self):
@@ -49,7 +49,7 @@ class TestLogin:
         self.browser.execute_script("arguments[0].click();", button)
         assert self.login_page.error_message().is_displayed()
 
-    @allure.title("Bejelentkezés tesztelése")
+    @allure.title("Bejelentkezés password megadása nélkül")
     @allure.description("Bejelentkezés - jelszó megadása nélkül")
     @allure.severity(allure.severity_level.CRITICAL)
     def test_login_without_password(self):
@@ -63,7 +63,7 @@ class TestLogin:
         self.browser.execute_script("arguments[0].click();", button)
         assert self.login_page.error_message().is_displayed()
 
-    @allure.title("Bejelentkezés tesztelése")
+    @allure.title("Bejelentkezés hibás email címmel")
     @allure.description("Bejelentkezés - rossz email címmel")
     @allure.severity(allure.severity_level.CRITICAL)
     def test_login_with_wrong_email(self):
@@ -77,7 +77,7 @@ class TestLogin:
         self.browser.execute_script("arguments[0].click();", button)
         assert self.login_page.error_message().is_displayed()
 
-    @allure.title("Bejelentkezés tesztelése")
+    @allure.title("Bejelentkezés hibás password-el")
     @allure.description("Bejelentkezés - rossz jelszóval")
     @allure.severity(allure.severity_level.CRITICAL)
     def test_login_with_wrong_password(self):

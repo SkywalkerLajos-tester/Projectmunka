@@ -1,36 +1,33 @@
 TESTUSER = [
-    ##### valid registration
+    ##### valid registration + with same email
     {
-    "lastname": "Elek",
+    "lastname": "Elemér",
     "firstname": "Teszt",
     "phone_number": "+91123456789",
-    "email": "test@elek.hu",
-    "email_confirm": "test@elek.hu",
+    "email": "test@ele.hu",
+    "email_confirm": "test@ele.hu",
     "password": "1234_Abcd",
     "password_confirm": "1234_Abcd"
 },
-##### registration with same email
+##### registration with invalid name and phone number
     {
-    "lastname": "Elvira",
-    "firstname": "Teszt",
-    "phone_number": "+91123456789",
-    "email": "test@elek.hu",
-    "email_confirm": "test@elek.hu",
+    "lastname": "456",
+    "firstname": "123",
+    "phone_number": "abcd",
+    "email": "test@belek.hu",
+    "email_confirm": "test@belek.hu",
     "password": "1234_Abcd",
     "password_confirm": "1234_Abcd"
 },
-##### registration with same email
+##### registration with invalid email
     {
-    "lastname": "Elvira",
-    "firstname": "Teszt",
-    "phone_number": "+91123456789",
-    "email": "test@elek.hu",
-    "email_confirm": "test@elek.hu",
+    "lastname": "456",
+    "firstname": "123",
+    "phone_number": "abcd",
+    "email": "test",
+    "email_confirm": "test",
     "password": "1234_Abcd",
     "password_confirm": "1234_Abcd"
 },
-
-
-
 
     ]

@@ -33,7 +33,7 @@ class RegistrationPage(GeneralPage):
         return self.wait.until(EC.element_to_be_clickable((By.ID, "confirmPassword")))
 
     def button_registration(self):
-        return self.wait.until(EC.element_to_be_clickable((By.XPATH, "(//button[@class='btn'])[2]")))
+        return self.wait.until(EC.element_to_be_clickable((By.XPATH, "(//button[@type='submit'])[2]")))
 
 
 ##################ERROR MESSAGES#################################x

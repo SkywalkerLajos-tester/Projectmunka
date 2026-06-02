@@ -6,10 +6,10 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support.select import Select
 
 
-class LoginPage(GeneralPage):
+class LoggedIn(GeneralPage):
     def __init__(self, browser, URL):
         super().__init__(browser, URL)
         self.wait = WebDriverWait(self.browser, 5)
 
     def button_exit(self):
-        return self.wait.until(EC.element_to_be_clickable((By.XPATH, "(//div[@class='my-navbar-right-links']/a)[2]")))
+        return self.wait.until(EC.element_to_be_clickable((By.XPATH, "//a[text()='Kijelentkezés']")))

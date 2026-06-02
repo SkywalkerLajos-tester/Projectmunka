@@ -27,4 +27,4 @@ class LoginPage(GeneralPage):
         return self.wait.until(EC.element_to_be_clickable((By.XPATH, "//div/small")))
 
     def sign_in_window(self):
-        return self.wait.until(EC.element_to_be_clickable((By.XPATH, "//div[@class='main']")))
+        return self.wait.until(EC.element_to_be_clickable((By.XPATH, "//button[text()='Bejelentkezés']")))

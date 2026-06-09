@@ -91,7 +91,7 @@ class TestLogin:
         self.browser.execute_script("arguments[0].click();", button)
         assert self.login_page.error_message().is_displayed()
 
-    def test_login_with_wrong_password_2(self):
+    def test_teljesen_uj_tesztnev(self):
         self.main_page.open_webpage()
         self.main_page.select_language_hu()
         self.main_page.login().click()

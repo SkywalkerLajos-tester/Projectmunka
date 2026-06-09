@@ -90,3 +90,14 @@ class TestLogin:
         button = self.login_page.button_sign_in()
         self.browser.execute_script("arguments[0].click();", button)
         assert self.login_page.error_message().is_displayed()
+
+    def test_login_with_wrong_password_2(self):
+        self.main_page.open_webpage()
+        self.main_page.select_language_hu()
+        self.main_page.login().click()
+        self.login_page.email_address().send_keys("test1@test.hu")
+        self.login_page.enter_password().send_keys("1234_Abc")
+        # self.login_page.button_sign_in().click()
+        button = self.login_page.button_sign_in()
+        self.browser.execute_script("arguments[0].click();", button)
+        assert self.login_page.error_message().is_displayed()

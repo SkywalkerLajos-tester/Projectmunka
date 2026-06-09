@@ -66,7 +66,7 @@ class TestLogin:
     @allure.title("Bejelentkezés hibás email címmel")
     @allure.description("Bejelentkezés - rossz email címmel")
     @allure.severity(allure.severity_level.CRITICAL)
-    def test_login_with_wrong_email_2(self):
+    def test_login_with_wrong_email(self):
         self.main_page.open_webpage()
         self.main_page.select_language_hu()
         self.main_page.login().click()

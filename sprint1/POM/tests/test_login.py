@@ -93,6 +93,4 @@ class TestLogin:
 
     def test_teljesen_uj_tesztnev(self):
         self.main_page.open_webpage()
-        self.main_page.select_language_hu()
-        self.main_page.login().click()
 

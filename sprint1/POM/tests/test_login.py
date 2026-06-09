@@ -80,7 +80,7 @@ class TestLogin:
     @allure.title("Bejelentkezés hibás password-el")
     @allure.description("Bejelentkezés - rossz jelszóval")
     @allure.severity(allure.severity_level.CRITICAL)
-    def test_login_with_wrong_password(self):
+    def test_login_with_wrong_password_2(self):
         self.main_page.open_webpage()
         self.main_page.select_language_hu()
         self.main_page.login().click()

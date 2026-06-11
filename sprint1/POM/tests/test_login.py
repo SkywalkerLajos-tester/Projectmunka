@@ -39,12 +39,11 @@ class TestLogin:
             ("test1@test.hu", "1234_Abcd", "Login eng tc01", "Login valid - happy path", ["All good", "No error", "Success"])
         ]
     )
-    def test_login_valid(self, email, password, title, description, tag):
+    def test_login_valid(self, email, title, password, description, tag):
         allure.dynamic.title(title)
         allure.dynamic.description(description)
         allure.dynamic.tag(*tag)
 
-        self._execute_login("test1@test.hu", "1234_Abcd")
         self._execute_login(email, password)
 
         signed_in_text = self.logged_in_page.button_exit().text
@@ -54,8 +53,8 @@ class TestLogin:
     @pytest.mark.parametrize(
         "email, password, title, description, tag",
         [
-            ("", "1234_Abcd", "Login eng tc02", "Login without email", ["Invalid login", "Without email", "Missing error message", "Please enter an email"]),
-            ("test1@test.hu", "", "Login eng tc03", "Login without password", ["Invalid login", "Without password"]),
+            ("", "1234_Abcd", "Login eng tc02", "Login without email", ["Invalid login", "Without email", "Wrong error message", "Please enter an email"]),
+            ("test1@test.hu", "", "Login eng tc03", "Login without password", ["Invalid login", "Without password", "Wrong error message", "Please enter your password"]),
             ("te1st1@test.hu", "1234_Abcd", "Login eng tc04", "Login with wrong email", ["Invalid login", "With wrong email"]),
             ("test1@test.hu", "1234_Abc", "Login eng tc05", "Login with wrong password", ["Invalid login", "With wrong password"]),
         ]

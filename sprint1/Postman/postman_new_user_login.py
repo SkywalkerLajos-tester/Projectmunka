@@ -1,18 +1,31 @@
 import csv
+import os
 import requests
 
 url = "http://localhost:8080/api/users/login"
+
+# ----- EZ A RÉSZ AUTOMATIKUSAN MEGTALÁLJA A JÓ ÚTVONALAT -----
+# Megnézzük, hol van ez a login.py fájl (sprint1/Postman)
+script_dir = os.path.dirname(os.path.abspath(__file__))
+# Kilépünk a Postman mappából eggyel feljebb (sprint1)
+#sprint1_dir = os.path.dirname(script_dir)
+# Összerakjuk a new_users.csv pontos és teljes elérési útját
+input_csv_path = os.path.join(script_dir, "new_users.csv")
+# ------------------------------------------------------------
 
 # Ide gyűjtjük össze a sikeresen bejelentkezett felhasználókat és a tokenjeiket
 successful_logins = []
 
 # 1. CSV beolvasása és kérések elküldése
-with open("users.csv", mode="r", encoding="utf-8") as file:
+with open(input_csv_path, mode="r", encoding="utf-8") as file:
     csv_reader = csv.DictReader(file)
 
     for row in csv_reader:
-        email = row["email"]
-        password = row["password"]
+        email = row["Email"]
+        password = row["Password"]
+        last_name = row["LastName"]
+        first_name = row["FirstName"]
+        phone_number = row["PhoneNumber"]
 
         print(f"Bejelentkezés: {email}...")
         response = requests.get(url, auth=(email, password))
@@ -30,7 +43,10 @@ with open("users.csv", mode="r", encoding="utf-8") as file:
                 successful_logins.append({
                     "email": email,
                     "password": password,
-                    "accessToken": token
+                    "accessToken": token,
+                    "lastName": last_name,
+                    "firstName": first_name,
+                    "phoneNumber": phone_number
                 })
             else:
                 print("-> Sikeres login, de nem található 'accessToken' a válaszban!")
@@ -42,7 +58,7 @@ with open("users.csv", mode="r", encoding="utf-8") as file:
 # 2. A kinyert tokenek kimentése egy ÚJ CSV fájlba
 if successful_logins:
     with open("logged_in_users.csv", mode="w", newline="", encoding="utf-8") as output_file:
-        fieldnames = ["email", "password", "accessToken"]
+        fieldnames = ["email", "password", "accessToken", "lastName", "firstName", "phoneNumber"]
         writer = csv.DictWriter(output_file, fieldnames=fieldnames)
 
         # Írjuk ki a fejlécet

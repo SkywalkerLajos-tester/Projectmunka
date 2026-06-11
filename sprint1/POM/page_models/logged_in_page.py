@@ -12,4 +12,4 @@ class LoggedIn(GeneralPage):
         self.wait = WebDriverWait(self.browser, 5)
 
     def button_exit(self):
-        return self.wait.until(EC.element_to_be_clickable((By.XPATH, "//a[text()='Kijelentkezés']")))
+        return self.wait.until(EC.element_to_be_clickable((By.XPATH, "//a[text()='Logout']")))

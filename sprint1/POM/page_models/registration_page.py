@@ -39,26 +39,26 @@ class RegistrationPage(GeneralPage):
 ##################ERROR MESSAGES#################################x
 
     def error_last_name(self):
-        return self.wait.until(EC.element_to_be_clickable((By.XPATH, "//div[1]/small")))
+        return self.wait.until(EC.visibility_of_element_located((By.XPATH, "//div[1]/small")))
 
     def error_first_name(self):
-        return self.wait.until(EC.element_to_be_clickable((By.XPATH, "//div[2]/small")))
+        return self.wait.until(EC.visibility_of_element_located((By.XPATH, "//div[2]/small")))
 
     def error_phone_number(self):
-        return self.wait.until(EC.element_to_be_clickable((By.XPATH, "//div[3]/small")))
+        return self.wait.until(EC.visibility_of_element_located((By.XPATH, "//div[3]/small")))
 
-    def error_email_missing(self):
-        return self.wait.until(EC.element_to_be_clickable((By.XPATH, "//div[4]/small")))
+    def error_email_missing_or_wrong_single(self):
+        return self.wait.until(EC.visibility_of_element_located((By.XPATH, "//div[4]/small")))
 
     def error_email_wrong_format(self):
-        return self.wait.until(EC.element_to_be_clickable((By.XPATH, "//div[4]/small[2]")))
+        return self.wait.until(EC.visibility_of_element_located((By.XPATH, "//div[4]/small[2]")))
 
     def error_confirm_email_missing(self):
-        return self.wait.until(EC.element_to_be_clickable((By.XPATH, "//div[5]/small")))
+        return self.wait.until(EC.visibility_of_element_located((By.XPATH, "//small[contains(text(), 'Email does not match')]")))
 
     def error_password(self):
-        return self.wait.until(EC.element_to_be_clickable((By.XPATH, "//div[6]/small")))
+        return self.wait.until(EC.visibility_of_element_located((By.XPATH, "//div[6]/small")))
 
     def error_confirm_password(self):
-        return self.wait.until(EC.element_to_be_clickable((By.XPATH, "//div[7]/small")))
+        return self.wait.until(EC.visibility_of_element_located((By.XPATH, "//div[7]/small")))
 

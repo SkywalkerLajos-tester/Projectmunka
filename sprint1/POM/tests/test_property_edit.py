@@ -32,8 +32,8 @@ class TestPropertyEdit:
         self.main_page.select_language_en()
         self.main_page.login().click()
 
-    # def teardown_method(self):
-    #     self.main_page.close_browser()
+    def teardown_method(self):
+        self.main_page.close_browser()
 
 
     # ==========================================

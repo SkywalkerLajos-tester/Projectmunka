@@ -15,74 +15,124 @@ class MyProperties:
         # Az összes ingatlan kártya közös osztálya
         self.property_cards = (By.CSS_SELECTOR, "div.main-list-item")
 
-        # A megerősítő ablakban lévő törlés gomb (vagy gombok)
-        self.confirm_delete_panel = (By.CSS_SELECTOR, "div.confirm-delete")
-        self.confirm_delete_button = (By.XPATH, "//div[contains(@class, 'confirm-delete')]//button")
-
     # --- 2. DINAMIKUS LOKÁTOR GENERÁTOROK ---
-    # Mivel a gombot a címe alapján kell megtalálnunk, a lokátort egy külön függvény generálja le
-    def _get_delete_button_locator_by_title(self, property_address):
-        """Létrehozza a specifikus törlés gomb lokátorát az ingatlan címe alapján."""
+    def _get_delete_button_locator_by_address(self, property_address):
+        """Létrehozza a specifikus törlés gomb lokátorát az ingatlan pontos címe alapján."""
         xpath = f"//div[contains(@class, 'main-list-item')][descendant::*[contains(text(), '{property_address}')]]//button[contains(@class, 'btn-delete')]"
         return (By.XPATH, xpath)
 
-    # --- 3. ELEM ELÉRÉSI METÓDUSOK (GETTEREK) ---
-    def get_delete_button(self, property_address):
-        """Megvárja, odagördül és visszaadja a törlendő ingatlan törlés gombját."""
-        locator = self._get_delete_button_locator_by_title(property_address)
+    def _get_edit_button_locator_by_address(self, property_address):
+        """Létrehozza a specifikus szerkesztés (Edit) gomb lokátorát az ingatlan pontos címe alapján."""
+        xpath = f"//div[contains(@class, 'main-list-item')][descendant::*[contains(text(), '{property_address}')]]//button[contains(@class, 'btn-edit')]"
+        return (By.XPATH, xpath)
 
-        # 1. Megvárjuk, amíg az elem egyáltalán jelen van a HTML-ben (DOM)
+    def _get_upload_button_locator_by_address(self, property_address):
+        """Létrehozza a specifikus feltöltés (Upload) gomb lokátorát az ingatlan pontos címe alapján."""
+        xpath = f"//div[contains(@class, 'main-list-item')][descendant::*[contains(text(), '{property_address}')]]//button[contains(@class, 'btn-upload')]"
+        return (By.XPATH, xpath)
+
+    # --- 3. ELEM ELÉRÉSI METÓDUSOK (GETTEREK) ---
+    def get_delete_button(self, property_address) -> WebElement:
+        """Megvárja, odagördül és visszaadja a törlendő ingatlan törlés gombját."""
+        locator = self._get_delete_button_locator_by_address(property_address)
+
+        # Megvárjuk, amíg az elem egyáltalán jelen van a HTML-ben (DOM)
         button_element = WebDriverWait(self.browser, 10).until(
             EC.presence_of_element_located(locator)
         )
 
-        print(f"[POM] Ingatlan megtalálva a kódban, odagördülés a(z) {property_address}. találathoz...")
+        print(f"[POM] Ingatlan megtalálva a kódban, odagördülés a(z) {property_address} találathoz...")
 
-        # 2. GOLYÓÁLLÓ GÖRGETÉS: JavaScript segítségével pontosan a gombhoz görgetjük a képernyőt.
-        # A {'block': 'center'} biztosítja, hogy a gomb a képernyő KÖZEPÉRE kerüljön,
-        # így a fix fejléc (header) biztosan nem fogja kitakarni!
+        # GÖRGETÉS
         self.browser.execute_script(
             "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});",
             button_element
         )
 
-        # Várunk egy pici tizedmásodpercet, amíg a sima (smooth) görgetési animáció lezajlik
         time.sleep(0.5)
 
-        # 3. Most már biztosan látható és kattintható, visszaadjuk a gombot
         return WebDriverWait(self.browser, 5).until(
             EC.element_to_be_clickable(locator)
         )
 
-    def get_confirm_button(self):
-        """Megvárja és visszaadja a felugró panel megerősítő gombját."""
+    def get_edit_button(self, property_address) -> WebElement:
+        """Megvárja, odagördül és visszaadja a kiválasztott ingatlan Edit gombját."""
+        locator = self._get_edit_button_locator_by_address(property_address)
+
+        button_element = WebDriverWait(self.browser, 10).until(
+            EC.presence_of_element_located(locator)
+        )
+
+        print(f"[POM] Ingatlan megtalálva a kódban, odagördülés az Edit gombhoz: {property_address}...")
+
+        self.browser.execute_script(
+            "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});",
+            button_element
+        )
+
+        time.sleep(0.5)
+
         return WebDriverWait(self.browser, 5).until(
-            EC.element_to_be_clickable(self.confirm_delete_button)
+            EC.element_to_be_clickable(locator)
+        )
+
+    def get_upload_button(self, property_address) -> WebElement:
+        """Megvárja, odagördül és visszaadja a kiválasztott ingatlan Upload gombját."""
+        locator = self._get_upload_button_locator_by_address(property_address)
+
+        button_element = WebDriverWait(self.browser, 10).until(
+            EC.presence_of_element_located(locator)
+        )
+
+        print(f"[POM] Ingatlan megtalálva a kódban, odagördülés az Upload gombhoz: {property_address}...")
+
+        self.browser.execute_script(
+            "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});",
+            button_element
+        )
+
+        time.sleep(0.5)
+
+        return WebDriverWait(self.browser, 5).until(
+            EC.element_to_be_clickable(locator)
+        )
+
+    def get_confirm_yes_button(self, property_address: str) -> WebElement:
+        """Megvárja és visszaadja a felugró ablak YES gombját az ingatlan címe alapján."""
+        exact_xpath = f"//div[contains(@class, 'main-list-item')][descendant::*[contains(text(), '{property_address}')]]//button[contains(@class, 'confirm-delete-yes')]"
+        return WebDriverWait(self.browser, 10).until(
+            EC.element_to_be_clickable((By.XPATH, exact_xpath))
+        )
+
+    def get_confirm_cancel_button(self, property_address: str) -> WebElement:
+        """Megvárja és visszaadja a felugró ablak CANCEL gombját az ingatlan címe alapján."""
+        exact_xpath = f"//div[contains(@class, 'main-list-item')][descendant::*[contains(text(), '{property_address}')]]//button[contains(@class, 'confirm-delete-cancel')]"
+        return WebDriverWait(self.browser, 10).until(
+            EC.element_to_be_clickable((By.XPATH, exact_xpath))
         )
 
     # --- 4. AKCIÓ METÓDUSOK (MŰVELETEK) ---
-    def click_delete_on_property(self, property_address):
+    def click_delete_on_property(self, property_address: str) -> None:
         """Első lépés: rákattint az ingatlan saját Delete gombjára."""
         print(f"[POM] Kattintás a(z) '{property_address}' ingatlan Delete gombjára.")
         self.get_delete_button(property_address).click()
 
-    def click_confirm_delete(self, property_address: str) -> WebElement:
-        # 1. Megkeressük a kártyát, ami tartalmazza a címet
-        # 2. Azon belül megkeressük a confirm-delete-yes gombot
-        exact_xpath = f"//div[contains(@class, 'main-list-item')][descendant::*[contains(text(), '{property_address}')]]//button[contains(@class, 'confirm-delete-yes')]"
+    def click_edit_on_property(self, property_address: str) -> None:
+        """Rákattint az ingatlan saját Edit gombjára a címe alapján."""
+        print(f"[POM] Kattintás a(z) '{property_address}' ingatlan Edit gombjára.")
+        self.get_edit_button(property_address).click()
 
-        button_yes = WebDriverWait(self.browser, 10).until(
-            EC.element_to_be_clickable((By.XPATH, exact_xpath))
-        )
-        button_yes.click()
+    def click_upload_on_property(self, property_address: str) -> None:
+        """Rákattint az ingatlan saját Upload gombjára."""
+        print(f"[POM] Kattintás a(z) '{property_address}' ingatlan Upload gombjára.")
+        self.get_upload_button(property_address).click()
+
+    def click_confirm_delete(self, property_address: str) -> None:
+        """Törlés megerősítése: Megkeresi, majd rákattint a felugró ablak YES gombjára."""
+        print(f"[POM] Törlés megerősítése: Kattintás a 'YES' gombra a(z) '{property_address}' ingatlannál.")
+        self.get_confirm_yes_button(property_address).click()
 
     def click_cancel_delete(self, property_address: str) -> None:
-        """Rákattint a felugró ablak CANCEL gombjára az ingatlan címe alapján."""
+        """Törlés megszakítása: Megkeresi, majd rákattint a felugró ablak CANCEL gombjára."""
         print(f"[POM] Törlés megszakítása: Kattintás a 'CANCEL' gombra a(z) '{property_address}' ingatlannál.")
-        # A korábbi képernyőképed alapján a Cancel gomb osztálya: 'confirm-delete-cancel'
-        exact_xpath = f"//div[contains(@class, 'main-list-item')][descendant::*[contains(text(), '{property_address}')]]//button[contains(@class, 'confirm-delete-cancel')]"
-
-        button_cancel = WebDriverWait(self.browser, 10).until(
-            EC.element_to_be_clickable((By.XPATH, exact_xpath))
-        )
-        button_cancel.click()
+        self.get_confirm_cancel_button(property_address).click()

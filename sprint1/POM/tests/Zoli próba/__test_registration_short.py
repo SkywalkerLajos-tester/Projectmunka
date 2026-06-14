@@ -2,10 +2,10 @@ import pytest
 import allure
 import time
 
-from sprint1.POM.page_models.main_page_z import MoovSmartMain
-from sprint1.POM.page_models.registration_page_z import RegistrationPage
-from sprint1.POM.page_models.login_page_z import LoginPage
-from sprint1.POM.page_models.logged_in_page_z import LoggedIn
+from sprint1.POM.page_models.main_page import MoovSmartMain
+from sprint1.POM.page_models.registration_page import RegistrationPage
+from sprint1.POM.page_models.login_page import LoginPage
+from sprint1.POM.page_models.logged_in_page import LoggedIn
 from sprint1.POM.create_driver import get_configured_chrome_driver
 from sprint1.POM.testdata.testuser_reg import TESTUSER
 from sprint1.POM.testdata.testurls import BASE_URL
@@ -56,8 +56,8 @@ class TestRegistration:
     def test_registration_hun_with_same_email(self):
         self._fill_registration_form_and_submit(TESTUSER[0])
 
-        assert self.registration_page.error_email_missing().is_displayed()
-        assert self.registration_page.error_email_missing().text == "Email address is already taken!"
+        assert self.registration_page.error_email_missing_or_wrong_single().is_displayed()
+        assert self.registration_page.error_email_missing_or_wrong_single().text == "Email address is already taken!"
 
     @allure.title("Regisztráció magyar felületen - nem megfelelő névvel és telefonszámmal")
     @allure.description("Regisztráció - negatív")

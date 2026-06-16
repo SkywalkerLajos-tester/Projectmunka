@@ -1,6 +1,9 @@
 import time
 
 from selenium.webdriver.support.expected_conditions import element_to_be_clickable
+from sprint1.POM.page_models.login_page_ma import LoginPage
+from sprint1.POM.page_models.logged_in_page_ma import LoggedIn
+from sprint1.POM.page_models.my_properties_page_ma import MyProperties
 from sprint1.POM.general_page import GeneralPage
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
@@ -10,6 +13,9 @@ from selenium.webdriver.support.wait import WebDriverWait
 class PropertyEditPage(GeneralPage):
     def __init__(self, browser, URL):
         super().__init__(browser, URL)
+        self.login_page_ma = LoginPage(self.browser, URL)
+        self.logged_in_page_ma = LoggedIn(self.browser, URL)
+        self.my_properties_page_ma = MyProperties(self.browser, URL)
         self.wait = WebDriverWait(self.browser, 5)
 
     def button_facts(self) -> WebElement:
@@ -89,3 +95,9 @@ class PropertyEditPage(GeneralPage):
 
         element.click = js_click
         return element
+
+    def _execute_login_my_properties(self, email, password, property_address):
+        """Közös segédmetódus az adatok beírására és a kattintásra."""
+        self.login_page_ma._execute_login(email, password)
+        self.logged_in_page_ma.navigate_to_my_properties()
+        self.my_properties_page_ma.click_edit_on_property(property_address)

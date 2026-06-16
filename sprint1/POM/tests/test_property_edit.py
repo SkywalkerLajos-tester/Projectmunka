@@ -14,6 +14,7 @@ from sprint1.POM.page_models.logged_in_page_ma import LoggedIn
 from sprint1.POM.page_models.my_properties_page_ma import MyProperties
 from sprint1.POM.page_models.property_form_page_ma import PropertyEditPage
 
+
 class TestPropertyEdit:
     def setup_method(self):
         self.browser = get_configured_chrome_driver()
@@ -25,7 +26,6 @@ class TestPropertyEdit:
         self.logged_in_page_ma = LoggedIn(self.browser, BASE_URL)
         self.my_properties_page_ma = MyProperties(self.browser, BASE_URL)
         self.property_form_page_ma = PropertyEditPage(self.browser, BASE_URL)
-
 
         # Minden teszt ezekkel a lépésekkel indul, így ideális itt futtatni őket
         self.main_page.open_webpage()
@@ -39,19 +39,18 @@ class TestPropertyEdit:
     # POZITÍV TESZTESETEK
     # ==========================================
 
+    @allure.title("TC01 - Ingatlan leírásának módosítása és mentése.")
     @allure.severity(allure.severity_level.NORMAL)
+    @allure.tag("Positive", "Functional", "Property edit")
     @pytest.mark.parametrize(
-        "email, password, property_address, description,title",
+        "email, password, property_address, description",
         [
-            ("test3@test.hu", "1234_Abcd", "6000 Kecskemét, Szent Miklós street", "Property description edit"
-                 ,"TC01 - Ingatlan leírásának módosítása és mentése.")
+            ("test3@test.hu", "1234_Abcd", "6000 Kecskemét, Szent Miklós street", "Property description edit")
         ]
     )
-    def test_property_descripton_edit(self, email, password, property_address, description,title):
+    def test_property_descripton_edit(self, email, password, property_address, description):
         """TC01 - Ingatlan leírásának módosítása és mentése."""
-        self.login_page_ma._execute_login(email, password)
-        self.logged_in_page_ma.navigate_to_my_properties()
-        self.my_properties_page_ma.click_edit_on_property(property_address)
+        self.property_form_page_ma._execute_login_my_properties(email, password, property_address)
 
         self.property_form_page_ma.button_features().click()
         self.property_form_page_ma.textarea_description().clear()
@@ -63,20 +62,19 @@ class TestPropertyEdit:
         success_nav = self.property_form_page_ma.get_current_url()
         assert success_nav == "http://localhost:4200/my-property-list"
 
-
+    @allure.title("TC02 - Alapadatok módosítása és mentése.")
     @allure.severity(allure.severity_level.NORMAL)
+    @allure.tag("Positive", "Functional", "Property edit")
     @pytest.mark.parametrize(
-        "email, password, property_address, new_price, new_sqm,title",
+        "email, password, property_address, new_price, new_sqm, description",
         [
-            ("test3@test.hu", "1234_Abcd", "6000 Kecskemét, Szent Miklós street", "320000", "75"
-                 ,"TC02 - Alapadatok módosítása és mentése.")
+            ("test3@test.hu", "1234_Abcd", "6000 Kecskemét, Szent Miklós street", "320000", "75",
+             "Basic property datas change and save")
         ]
     )
-    def test_property_edit_facts(self, email, password, property_address, new_price, new_sqm,title):
+    def test_property_edit_facts(self, email, password, property_address, new_price, new_sqm, description):
         """TC02 - Alapadatok módosítása és mentése."""
-        self.login_page_ma._execute_login(email, password)
-        self.logged_in_page_ma.navigate_to_my_properties()
-        self.my_properties_page_ma.click_edit_on_property(property_address)
+        self.property_form_page_ma._execute_login_my_properties(email, password, property_address)
 
         # Szekció nyitás és adatmódosítás
         self.property_form_page_ma.button_facts().click()
@@ -97,20 +95,19 @@ class TestPropertyEdit:
         success_nav = self.property_form_page_ma.get_current_url()
         assert success_nav == "http://localhost:4200/my-property-list"
 
-
+    @allure.title("TC03 - Cím módosítása és mentése.")
     @allure.severity(allure.severity_level.NORMAL)
+    @allure.tag("Positive", "Functional", "Property edit")
     @pytest.mark.parametrize(
-        "email, password, property_address, search_city,title",
+        "email, password, property_address, search_city, description",
         [
-            ("test3@test.hu", "1234_Abcd", "6000 Kecskemét, Szent Miklós street", "1091 Budapest, Üllői street"
-                 ,"TC03 - Cím módosítása és mentése.")
+            ("test3@test.hu", "1234_Abcd", "7100 Szekszárd, Kossuth Lajos street", "1091 Budapest, Üllői street",
+             "Address change and save.")
         ]
     )
-    def test_property_edit_location_autocomplete(self, email, password, property_address, search_city,title):
+    def test_property_edit_location_autocomplete(self, email, password, property_address, search_city, description):
         """TC03 - Cím módosítása és mentése."""
-        self.login_page_ma._execute_login(email, password)
-        self.logged_in_page_ma.navigate_to_my_properties()
-        self.my_properties_page_ma.click_edit_on_property(property_address)
+        self.property_form_page_ma._execute_login_my_properties(email, password, property_address)
 
         self.property_form_page_ma.button_location().click()
 
@@ -134,23 +131,23 @@ class TestPropertyEdit:
     # NEGATÍV TESZTESETEK
     # ==========================================
 
+    @allure.title("TC04 - Negatív eset: Mentési kísérlet üresen hagyott ár mezővel.")
     @allure.severity(allure.severity_level.NORMAL)
+    @allure.tag("Negative", "Functional", "Property edit")
     @pytest.mark.parametrize(
-        "email, password, property_address,title",
+        "email, password, property_address,description",
         [
-            ("test3@test.hu", "1234_Abcd", "1091 Budapest, Üllői street"
-                 ,"TC04 - Negatív eset: Mentési kísérlet üresen hagyott ár mezővel.")
+            ("test3@test.hu", "1234_Abcd", "6000 Kecskemét, Szent Miklós street", "Save without price.")
         ]
     )
-    def test_property_edit_error_empty_price(self, email, password, property_address,title):
+    def test_property_edit_error_empty_price(self, email, password, property_address, description):
         """TC04 - Negatív eset: Mentési kísérlet üresen hagyott ár mezővel."""
-        self.login_page_ma._execute_login(email, password)
-        self.logged_in_page_ma.navigate_to_my_properties()
-        self.my_properties_page_ma.click_edit_on_property(property_address)
+        self.property_form_page_ma._execute_login_my_properties(email, password, property_address)
 
         # Kinyitjuk a Facts szekciót
         self.property_form_page_ma.button_facts().click()
 
+        time.sleep(0.5)
         price_field = self.property_form_page_ma.input_price()
         price_field.click()
 
@@ -177,19 +174,19 @@ class TestPropertyEdit:
         # az oldal NEM navigálhatott el, maradt a formon.
         assert "property-form" in current_url
 
+    @allure.title("TC05 - Negatív eset: Mentési kísérlet negatív összegű árral.")
     @allure.severity(allure.severity_level.NORMAL)
+    @allure.tag("Negative", "Functional", "Property edit")
     @pytest.mark.parametrize(
-        "email, password, property_address, invalid_price,title",
+        "email, password, property_address, invalid_price, description",
         [
-            ("test3@test.hu", "1234_Abcd", "1091 Budapest, Üllői street", "-5000",
-                 "TC05 - Negatív eset: Mentési kísérlet negatív összegű árral.")
+            ("test3@test.hu", "1234_Abcd", "6000 Kecskemét, Szent Miklós street", "-5000",
+             "Save with negative price.")
         ]
     )
-    def test_property_edit_error_negative_price(self, email, password, property_address, invalid_price,title):
+    def test_property_edit_error_negative_price(self, email, password, property_address, invalid_price, description):
         """TC05 - Negatív eset: Mentési kísérlet negatív összegű árral."""
-        self.login_page_ma._execute_login(email, password)
-        self.logged_in_page_ma.navigate_to_my_properties()
-        self.my_properties_page_ma.click_edit_on_property(property_address)
+        self.property_form_page_ma._execute_login_my_properties(email, password, property_address)
 
         # Kinyitjuk a Facts szekciót és negatív árat adunk meg
         self.property_form_page_ma.button_facts().click()
@@ -206,19 +203,20 @@ class TestPropertyEdit:
         # Elvárás: Negatív árral sem navigálhat el, a formon kell maradnia
         assert "property-form" in current_url
 
+    @allure.title("TC06 - Negatív eset: Mentési kísérlet listából ki nem választott, érvénytelen címmel.")
     @allure.severity(allure.severity_level.NORMAL)
+    @allure.tag("Negative", "Functional", "Property edit")
     @pytest.mark.parametrize(
-        "email, password, property_address, incomplete_address,title",
+        "email, password, property_address, incomplete_address, description",
         [
-            ("test3@test.hu", "1234_Abcd", "1091 Budapest, Üllői street", "ValamiKamucim123"
-                 ,"TC06 - Negatív eset: Mentési kísérlet listából ki nem választott, érvénytelen címmel.")
+            ("test3@test.hu", "1234_Abcd", "6000 Kecskemét, Szent Miklós street", "ValamiKamucim123"
+                 , "Save with invalid address.")
         ]
     )
-    def test_property_edit_error_invalid_autocomplete(self, email, password, property_address, incomplete_address,title):
+    def test_property_edit_error_invalid_autocomplete(self, email, password, property_address, incomplete_address,
+                                                      description):
         """TC06 - Negatív eset: Mentési kísérlet listából ki nem választott, érvénytelen címmel."""
-        self.login_page_ma._execute_login(email, password)
-        self.logged_in_page_ma.navigate_to_my_properties()
-        self.my_properties_page_ma.click_edit_on_property(property_address)
+        self.property_form_page_ma._execute_login_my_properties(email, password, property_address)
 
         # Kinyitjuk a Location szekciót, beírunk egy nem létező szöveget, de nem kattintunk a listára
         self.property_form_page_ma.button_location().click()
@@ -241,18 +239,20 @@ class TestPropertyEdit:
     # KRITIKUS BIZTONSÁGI ÉS ARCHITEKTÚRA TESZTEK
     # ==========================================
 
+    @allure.title("TC07 - Kritikus biztonsági eset: Script injection (XSS) elleni védelem ellenőrzése.")
     @allure.severity(allure.severity_level.CRITICAL)
+    @allure.tag("Security", "Property edit")
     @pytest.mark.parametrize(
-        "email, password, property_address, xss_payload",
+        "email, password, property_address, xss_payload, description",
         [
-            ("test3@test.hu", "1234_Abcd", "6000 Kecskemét, Szent Miklós street", "<script>alert('XSS')</script>")
+            ("test3@test.hu", "1234_Abcd", "6000 Kecskemét, Szent Miklós street", "<script>alert('XSS')</script>",
+             "JS alert code in description textarea.")
         ]
     )
-    def test_property_edit_script_injection_protection(self, email, password, property_address, xss_payload):
+    def test_property_edit_script_injection_protection(self, email, password, property_address, xss_payload,
+                                                       description):
         """TC07 - Kritikus biztonsági eset: Script injection (XSS) elleni védelem ellenőrzése."""
-        self.login_page_ma._execute_login(email, password)
-        self.logged_in_page_ma.navigate_to_my_properties()
-        self.my_properties_page_ma.click_edit_on_property(property_address)
+        self.property_form_page_ma._execute_login_my_properties(email, password, property_address)
 
         # Kinyitjuk a Features fület és beillesztjük a kártékony kódot a leírásba
         self.property_form_page_ma.button_features().click()
@@ -274,18 +274,19 @@ class TestPropertyEdit:
         page_source = self.browser.page_source
         assert "You can only use the following special characters" in page_source, "A formon maradtunk, de nem kaptuk meg az XSS védelmi hibaüzenetet!"
 
+    @allure.title(
+        "TC08 - Kritikus architektúra eset: Szerver oldali validáció ellenőrzése frontend kikerülésével (Bypass kísérlet).")
     @allure.severity(allure.severity_level.CRITICAL)
+    @allure.tag("Security", "Property edit")
     @pytest.mark.parametrize(
-        "email, password, property_address",
+        "email, password, property_address, description",
         [
-            ("test3@test.hu", "1234_Abcd", "6000 Kecskemét, Szent Miklós street")
+            ("test3@test.hu", "1234_Abcd", "6000 Kecskemét, Szent Miklós street", "JS scripts using on price and save.")
         ]
     )
-    def test_property_edit_server_side_validation_bypass(self, email, password, property_address):
+    def test_property_edit_server_side_validation_bypass(self, email, password, property_address, description):
         """TC08 - Kritikus architektúra eset: Szerver oldali validáció ellenőrzése frontend kikerülésével (Bypass kísérlet)."""
-        self.login_page_ma._execute_login(email, password)
-        self.logged_in_page_ma.navigate_to_my_properties()
-        self.my_properties_page_ma.click_edit_on_property(property_address)
+        self.property_form_page_ma._execute_login_my_properties(email, password, property_address)
 
         # Kinyitjuk a Facts szekciót
         self.property_form_page_ma.button_facts().click()
@@ -296,7 +297,7 @@ class TestPropertyEdit:
         price_element = self.property_form_page_ma.input_price()
 
         # JS-ből kényszerítjük bele a hibás (üres) adatot, amit a billentyűzet-ellenőrzés nem lát
-        self.browser.execute_script("arguments[0].value = '';", price_element)
+        self.browser.execute_script("arguments[0].value = '-100000';", price_element)
         self.browser.execute_script("arguments[0].dispatchEvent(new Event('change'));", price_element)
 
         # Megnyitjuk a Features fület, hogy elérjük a gombot
@@ -320,6 +321,9 @@ class TestPropertyEdit:
             # és továbbra is ott kell lennie a listában a címe alapján!
             assert property_address in page_source, "A szerveroldali védelem elbukott, az ingatlan eltűnt vagy megsérült!"
 
+            # Plusz biztonsági ellenőrzés: Meggyőződünk róla, hogy a hibás ár tényleg NEM jelent meg a felületen
+            assert "-100000" not in page_source, "BUG: A rendszer elmentette a negatív árat az adatbázisba!"
+
             # Ha az ingatlan megvan, a teszt sikeres (PASSED), mert a backend megvédte az adatot!
             # Allure vagy konzol üzenetben jelezzük a frontend hibát a fejlesztőknek:
             print(
@@ -329,19 +333,19 @@ class TestPropertyEdit:
             # HA A JÖVŐBEN JAVÍTJÁK A FRONTENDET: Ha elutasítja a szerver, a formon kell tartania a böngészőt (Ez a tökéletes működés)
             assert "property-form" in current_url
 
-
+    @allure.title("TC09 - Kritikus biztonsági eset: Stored XSS ellenőrzése frontend validáció kikerülésével.")
     @allure.severity(allure.severity_level.CRITICAL)
+    @allure.tag("Security", "Property edit")
     @pytest.mark.parametrize(
-        "email, password, property_address, xss_payload",
+        "email, password, property_address, xss_payload, description",
         [
-            ("test3@test.hu", "1234_Abcd", "6000 Kecskemét, Szent Miklós street", "<script>alert('BypassXSS')</script>")
+            ("test3@test.hu", "1234_Abcd", "6000 Kecskemét, Szent Miklós street", "<script>alert('BypassXSS')</script>",
+             "JS script into description textarea")
         ]
     )
-    def test_property_edit_xss_validation_bypass(self, email, password, property_address, xss_payload):
+    def test_property_edit_xss_validation_bypass(self, email, password, property_address, xss_payload, description):
         """TC09 - Kritikus biztonsági eset: Stored XSS ellenőrzése frontend validáció kikerülésével."""
-        self.login_page_ma._execute_login(email, password)
-        self.logged_in_page_ma.navigate_to_my_properties()
-        self.my_properties_page_ma.click_edit_on_property(property_address)
+        self.property_form_page_ma._execute_login_my_properties(email, password, property_address)
 
         # Kinyitjuk a Features fület
         self.property_form_page_ma.button_features().click()

@@ -31,31 +31,31 @@ class TestPropertyDelete:
     def teardown_method(self):
         self.main_page.close_browser()
 
+    @allure.title("TC01 - Ingatlan törlés.")
+    @allure.tag( "Functional", "Property delete")
     @allure.severity(allure.severity_level.CRITICAL)
     @pytest.mark.parametrize(
-        "email, password,property_address, title, description, tag",
+        "email, password, property_address, description",
         [
-            ("test3@test.hu", "1234_Abcd", "7100 Szekszárd, Kossuth Lajos street", "Property delete eng tc01",
-             "Delete a property",
-             ["All good", "No error", "Success"])
+            ("test3@test.hu", "1234_Abcd", "1161 Budapest, Sándor street", "Property delete")
         ]
     )
-    def test_property_delete(self, email, password, property_address, title, description, tag):
+    def test_property_delete(self, email, password, property_address, description):
         self.login_page_ma._execute_login(email, password)
         self.logged_in_page_ma.navigate_to_my_properties()
         self.my_properties_page_ma.click_delete_on_property(property_address)
         self.my_properties_page_ma.click_confirm_delete(property_address)
 
+    @allure.title("TC02 - Ingatlan törlésének visszavonása.")
+    @allure.tag( "Functional", "Property delete")
     @allure.severity(allure.severity_level.CRITICAL)
     @pytest.mark.parametrize(
-        "email, password,property_address, title, description, tag",
+        "email, password, property_address, description",
         [
-            ("test3@test.hu", "1234_Abcd", "6000 Kecskemét, Szent Miklós street", "Property delete cancel eng tc02",
-             "Delete cancel at a property",
-             ["All good", "No error", "Success"])
+            ("test3@test.hu", "1234_Abcd", "6000 Kecskemét, Szent Miklós street", "Property delete cancel",)
         ]
     )
-    def test_property_cancel_delete(self, email, password, property_address, title, description, tag):
+    def test_property_cancel_delete(self, email, password, property_address, description):
         self.login_page_ma._execute_login(email, password)
         self.logged_in_page_ma.navigate_to_my_properties()
         self.my_properties_page_ma.click_delete_on_property(property_address)

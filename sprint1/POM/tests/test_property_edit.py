@@ -2,6 +2,8 @@ import time
 import pytest
 import allure
 
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from sprint1.POM.page_models.main_page import MoovSmartMain
 from sprint1.POM.page_models.registration_page import RegistrationPage
@@ -54,13 +56,26 @@ class TestPropertyEdit:
 
         self.property_form_page_ma.button_features().click()
         self.property_form_page_ma.textarea_description().clear()
-        self.property_form_page_ma.textarea_description().send_keys("kiskutya")
+        test_text = "kiskutya"
+        self.property_form_page_ma.textarea_description().send_keys(test_text)
 
         # A POM háttérben intézi a biztos kattintást!
         self.property_form_page_ma.button_save_property().click()
         time.sleep(0.5)
         success_nav = self.property_form_page_ma.get_current_url()
         assert success_nav == "http://localhost:4200/my-property-list"
+
+        # A legbiztosabb módszer: rákattintunk újra az Edit-re ennél az ingatlannál, és megnézzük a textarea tartalmát
+        self.my_properties_page_ma.click_edit_on_property(property_address)
+        time.sleep(0.5)
+
+        self.property_form_page_ma.button_features().click()
+        actual_description = self.property_form_page_ma.textarea_description().get_attribute("value")
+
+        assert actual_description == test_text, (
+            f"BUG: A leírás a mentés után nem frissült az adatbázisban! "
+            f"Elvárt: '{test_text}', Mentett érték: '{actual_description}'"
+        )
 
     @allure.title("TC02 - Alapadatok módosítása és mentése.")
     @allure.severity(allure.severity_level.NORMAL)
@@ -95,6 +110,29 @@ class TestPropertyEdit:
         success_nav = self.property_form_page_ma.get_current_url()
         assert success_nav == "http://localhost:4200/my-property-list"
 
+        # --- 2. ELLENŐRZÉS: Adat-konzisztencia ellenőrzése mező szinten ---
+        # Újra megnyitjuk az ingatlant szerkesztésre
+        self.my_properties_page_ma.click_edit_on_property(property_address)
+        time.sleep(0.5)
+
+        # Megnyitjuk a Facts szekciót a mentett értékek beolvasásához
+        self.property_form_page_ma.button_facts().click()
+
+        actual_price = self.property_form_page_ma.input_price().get_attribute("value")
+        actual_sqm = self.property_form_page_ma.input_square_meter().get_attribute("value")
+
+        # Külön assert az Árra
+        assert actual_price == new_price, (
+            f"BUG: Az Ár (Price) mező nem frissült az adatbázisban! "
+            f"Elvárt: '{new_price}', Mentett érték: '{actual_price}'"
+        )
+
+        # Külön assert az Alapterületre
+        assert actual_sqm == new_sqm, (
+            f"BUG: Az Alapterület (Square meter) mező nem frissült az adatbázisban! "
+            f"Elvárt: '{new_sqm}', Mentett érték: '{actual_sqm}'"
+        )
+
     @allure.title("TC03 - Cím módosítása és mentése.")
     @allure.severity(allure.severity_level.NORMAL)
     @allure.tag("Positive", "Functional", "Property edit")
@@ -126,6 +164,28 @@ class TestPropertyEdit:
         time.sleep(0.5)
         success_nav = self.property_form_page_ma.get_current_url()
         assert success_nav == "http://localhost:4200/my-property-list"
+
+        # --- 2. ELLENŐRZÉS: Az új cím megjelenése a listában (Kártya ellenőrzés) ---
+        # Megvárjuk, amíg a kártyák stabilan betöltődnek az oldalon
+        from selenium.webdriver.support.ui import WebDriverWait
+        from selenium.webdriver.support import expected_conditions as EC
+        WebDriverWait(self.browser, 10).until(
+            EC.presence_of_element_located(self.my_properties_page_ma.property_cards)
+        )
+
+        # Lekérjük az összes kártya szövegét
+        cards = self.my_properties_page_ma.get_property_list_elements()
+
+        # Összegyűjtjük a kártyák látható szövegeit egy listába
+        card_texts = [card.text for card in cards]
+
+        # Megvizsgáljuk, hogy van-e olyan kártya, amelyik tartalmazza az új címet (vagy annak egy részét)
+        address_found = any(search_city in text for text in card_texts)
+
+        assert address_found, (
+            f"BUG: A módosított új cím ('{search_city}') nem található meg egyetlen ingatlan kártyáján sem "
+            f"a mentés után! Elérhető kártya szövegek a listában: {card_texts}"
+        )
 
     # ==========================================
     # NEGATÍV TESZTESETEK
@@ -175,7 +235,7 @@ class TestPropertyEdit:
         assert "property-form" in current_url
 
     @allure.title("TC05 - Negatív eset: Mentési kísérlet negatív összegű árral.")
-    @allure.severity(allure.severity_level.NORMAL)
+    @allure.severity(allure.severity_level.CRITICAL)
     @allure.tag("Negative", "Functional", "Property edit")
     @pytest.mark.parametrize(
         "email, password, property_address, invalid_price, description",
@@ -202,6 +262,25 @@ class TestPropertyEdit:
 
         # Elvárás: Negatív árral sem navigálhat el, a formon kell maradnia
         assert "property-form" in current_url
+
+        # --- 2. ELLENŐRZÉS: Backend adatvédelem ---
+        # A teszted itt EL FOG BUKNI, mert a negative_price_saved True lesz!
+        WebDriverWait(self.browser, 10).until(
+            EC.presence_of_element_located(self.my_properties_page_ma.property_cards)
+        )
+
+        # Lekérjük az összes kártya szövegét
+        cards = self.my_properties_page_ma.get_property_list_elements()
+        card_texts = [card.text for card in cards]
+
+        # Ha benne van a "-" és az "5000" vagy "5,000" valamilyen formában
+        # A legbiztosabb, ha megnézzük, hogy a "-5" és "000" karakterláncok benne vannak-e a szövegben
+        negative_price_saved = any("-" in text and "5" in text and "000" in text for text in card_texts)
+
+        assert not negative_price_saved, (
+            f"KRITIKUS RENDZERHIBA: A rendszer az adatbázisba is elmentette a negatív árat! "
+            f"A listában megjelent az érték! Látható kártya szövegek: {card_texts}"
+        )
 
     @allure.title("TC06 - Negatív eset: Mentési kísérlet listából ki nem választott, érvénytelen címmel.")
     @allure.severity(allure.severity_level.NORMAL)
@@ -234,6 +313,23 @@ class TestPropertyEdit:
 
         # Elvárás: Mivel a cím nincs geokódolva/kiválasztva, a form érvénytelen, az oldalon kell maradnia
         assert "property-form" in current_url
+
+        WebDriverWait(self.browser, 10).until(
+            EC.presence_of_element_located(self.my_properties_page_ma.property_cards)
+        )
+
+        # Lekérjük az összes kártyát és azok szöveges tartalmát
+        cards = self.my_properties_page_ma.get_property_list_elements()
+        card_texts = [card.text for card in cards]
+
+        # Megvizsgáljuk, hogy a beírt kamu szöveg megjelent-e bármelyik kártyán
+        invalid_address_saved = any(incomplete_address in text for text in card_texts)
+
+        # Elvárás: A kamu címnek NEM szabad szerepelnie a listában (Így ez az assert True-t kap, azaz PASSED lesz)
+        assert not invalid_address_saved, (
+            f"KRITIKUS BACKEND BUG: A rendszer az adatbázisba is elmentette a geokódolatlan kamu címet! "
+            f"A listában megjelent érték: '{incomplete_address}'. Látható kártyák: {card_texts}"
+        )
 
     # ==========================================
     # KRITIKUS BIZTONSÁGI ÉS ARCHITEKTÚRA TESZTEK

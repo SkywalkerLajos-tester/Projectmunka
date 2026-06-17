@@ -136,3 +136,9 @@ class MyProperties:
         """Törlés megszakítása: Megkeresi, majd rákattint a felugró ablak CANCEL gombjára."""
         print(f"[POM] Törlés megszakítása: Kattintás a 'CANCEL' gombra a(z) '{property_address}' ingatlannál.")
         self.get_confirm_cancel_button(property_address).click()
+
+    def get_property_list_elements(self) -> list:
+        """Visszaadja a listában található összes ingatlan kártya elemet egy Python listában."""
+        print("[POM] Az összes ingatlan kártya lekérése a listából...")
+        # Fontos: a find_elements-et használjuk (többes szám!), hogy listát kapjunk
+        return self.browser.find_elements(*self.property_cards)

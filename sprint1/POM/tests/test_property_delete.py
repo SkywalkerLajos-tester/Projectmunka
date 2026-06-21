@@ -9,11 +9,9 @@ from sprint1.POM.page_models.main_page import MoovSmartMain
 from sprint1.POM.page_models.registration_page import RegistrationPage
 from sprint1.POM.page_models.login_page import LoginPage
 from sprint1.POM.page_models.logged_in_page import LoggedIn
+from sprint1.POM.page_models.my_properties_page import MyProperties
 from sprint1.POM.create_driver import get_configured_chrome_driver
 from sprint1.POM.testdata.testurls import BASE_URL
-from sprint1.POM.page_models.login_page_ma import LoginPage
-from sprint1.POM.page_models.logged_in_page_ma import LoggedIn
-from sprint1.POM.page_models.my_properties_page_ma import MyProperties
 
 
 class TestPropertyDelete:
@@ -23,8 +21,6 @@ class TestPropertyDelete:
         self.registration_page = RegistrationPage(self.browser, BASE_URL)
         self.login_page = LoginPage(self.browser, BASE_URL)
         self.logged_in_page = LoggedIn(self.browser, BASE_URL)
-        self.login_page_ma = LoginPage(self.browser, BASE_URL)
-        self.logged_in_page_ma = LoggedIn(self.browser, BASE_URL)
         self.my_properties_page_ma = MyProperties(self.browser, BASE_URL)
 
         # Minden teszt ezekkel a lépésekkel indul, így ideális itt futtatni őket
@@ -45,8 +41,8 @@ class TestPropertyDelete:
         ]
     )
     def test_property_delete(self, email, password, property_address, description):
-        self.login_page_ma._execute_login(email, password)
-        self.logged_in_page_ma.navigate_to_my_properties()
+        self.login_page._execute_login(email, password)
+        self.logged_in_page.navigate_to_my_properties()
 
         WebDriverWait(self.browser, 10).until(
             EC.presence_of_element_located(self.my_properties_page_ma.property_cards)
@@ -79,8 +75,8 @@ class TestPropertyDelete:
         ]
     )
     def test_property_cancel_delete(self, email, password, property_address, description):
-        self.login_page_ma._execute_login(email, password)
-        self.logged_in_page_ma.navigate_to_my_properties()
+        self.login_page._execute_login(email, password)
+        self.logged_in_page.navigate_to_my_properties()
 
         WebDriverWait(self.browser, 10).until(
             EC.presence_of_element_located(self.my_properties_page_ma.property_cards)

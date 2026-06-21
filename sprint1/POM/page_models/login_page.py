@@ -28,3 +28,10 @@ class LoginPage(GeneralPage):
 
     def sign_in_window(self):
         return self.wait.until(EC.element_to_be_clickable((By.XPATH, "//button[text()='Sign in']")))
+
+    def _execute_login(self, email, password):
+        """Közös segédmetódus az adatok beírására és a kattintásra."""
+        self.email_address().send_keys(email)
+        self.enter_password().send_keys(password)
+        button = self.button_sign_in()
+        self.browser.execute_script("arguments[0].click();", button)

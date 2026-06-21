@@ -1,9 +1,7 @@
-
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support.select import Select
-
 from sprint1.POM.general_page import GeneralPage
 
 
@@ -79,3 +77,35 @@ class MoovSmartMain(GeneralPage):
 
     def get_buy(self):
         return self.browser.find_element(By.XPATH, "(//a[@class='navlink hover-underline-animation'])[1]")
+
+    def header_title(self):
+        return self.browser.find_element(By.XPATH, '//div[@class="header-title"]')
+
+    def main_header_title_sale(self):
+        return self.browser.find_element(By.XPATH, '//h3[@class="main-header-title" and contains(.,"Recent properties for Sale")]')
+
+    def main_header_title_rent(self):
+        return self.browser.find_element(By.XPATH, '//h3[@class="main-header-title" and contains(.,"Recent properties for Rent")]')
+
+    def for_sale_button(self):
+        return self.browser.find_element(By.ID, "saleType")
+
+    def city_placeholder(self):
+        return self.browser.find_element(By.ID, "city")
+
+    def search_button(self):
+        return self.browser.find_element(By.XPATH, '//button[@class="btn main-form-btn"]')
+
+    def helymeghatarozok_szama(self):
+        return len(self.browser.find_elements(By.CSS_SELECTOR,"img.leaflet-marker-icon"))
+
+    def helymeghatarozo(self):
+        return WebDriverWait(self.browser, 10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "img.leaflet-marker-icon")))
+
+    def nincs_talalat_uzenet(self):
+        try:
+            alert = self.browser.find_element(By.XPATH,"//*[contains(text(),'Nincs találat')]")
+            return alert.is_displayed()
+            #ha megkapja a "nincs találat" üzenetet akkor igazt (True) ad vissza
+        except:
+            return False

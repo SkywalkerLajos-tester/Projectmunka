@@ -1,9 +1,8 @@
 import allure
 
-
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-
+from sprint1.POM.page_models.base_page_a import BasePage
 from sprint1.POM.page_models.error_page_a import ErrorPage
 from sprint1.POM.page_models.main_page_a import MoovSmartMain
 
@@ -17,13 +16,14 @@ class TestErrorPage:  # ez a teszt
         self.browser.get("http://localhost:4200")
         self.main_page_a = MoovSmartMain(self.browser, "http://localhost:4200")
         self.error_page = ErrorPage(self.browser)
+        self.base_page_a = BasePage(self.browser)
 
     def teardown_method(self):
         self.browser.quit()
 
     @allure.title("404-es oldal megjelenítése")
-    @allure.description("Error page")
     @allure.severity(allure.severity_level.CRITICAL)
+    @allure.tag("Negative", "Read")
     def test_404_page(self):
         self.main_page_a.search_for_address("Székesfehérvár")
 

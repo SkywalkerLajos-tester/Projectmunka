@@ -13,25 +13,10 @@ class BasePage:
         self.search_button = (By.XPATH, '//button[@class="btn header-search-button"]')
 
     def search_location(self, text):
-        search = WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located(self.search_input)
-        )
+        search = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located(self.search_input))
         search.click()
         search.send_keys(text)
 
-        WebDriverWait(self.driver, 10).until(
-            EC.element_to_be_clickable(self.suggestion)
-        ).click()
+        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable(self.suggestion)).click()
 
         self.driver.find_element(*self.search_button).click()
-
-    def get_alert_text(self):
-
-        alert = WebDriverWait(self.driver, 10).until(
-            EC.alert_is_present()
-        )
-
-        text = alert.text
-        alert.accept()
-
-        return text

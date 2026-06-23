@@ -51,9 +51,9 @@ class TestRegistration:
             button.click()
             time.sleep(0.5)
 
-    # -------------------------------------------------------------------------
-    # TESZTESETEK
-    # -------------------------------------------------------------------------
+# -------------------------------------------------------------------------
+# TESZTESETEK
+# -------------------------------------------------------------------------
 
     @allure.title("Registration eng tc01")
     @allure.severity(allure.severity_level.CRITICAL)
@@ -274,3 +274,19 @@ class TestRegistration:
         button.click()
         time.sleep(0.5)
         assert self.browser.current_url == "http://localhost:4200/registration-form"
+
+    @allure.title("Registration eng tc12")
+    @allure.severity(allure.severity_level.CRITICAL)
+    @pytest.mark.parametrize(
+        "description, tag",
+        [
+            ("Registration with short names", ["Registration - short names", "Names too short", "Must be at least 3 characters long"])
+        ]
+    )
+    def test_registration_eng_with_short_names(self, description, tag):
+        allure.dynamic.description(description)
+        allure.dynamic.tag(*tag)
+
+        self.fill_registration_form_and_submit(TESTUSER[10])
+
+        assert self.browser.current_url != "http://localhost:4200/"

@@ -97,6 +97,16 @@ TESTUSER = [
     "email": "test_empc@elek.hu",
     "email_confirm": "test_epc@elek.hu",
     "password": "1234_Abcd",
-    "password_confirm": "1234_Abcdd"
+    "password_confirm": "1234_Abcddddddddddddd"
+},
+########## 11 registration with short names
+    {
+    "lastname": "Lo",
+    "firstname": "He",
+    "phone_number": "+91123456789",
+    "email": "helo@belo.hu",
+    "email_confirm": "helo@belo.hu",
+    "password": "1234_Abcd",
+    "password_confirm": "1234_Abcd"
 },
     ]

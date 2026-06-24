@@ -4,8 +4,8 @@ TESTUSER = [
     "lastname": "Elek",
     "firstname": "Teszt",
     "phone_number": "+91123456789",
-    "email": "test@elek.hu",
-    "email_confirm": "test@elek.hu",
+    "email": "teszt@elek.hu",
+    "email_confirm": "teszt@elek.hu",
     "password": "1234_Abcd",
     "password_confirm": "1234_Abcd"
 },
@@ -14,8 +14,8 @@ TESTUSER = [
     "lastname": "",
     "firstname": "Teszt",
     "phone_number": "+91123456789",
-    "email": "test_l@elek.hu",
-    "email_confirm": "test_l@elek.hu",
+    "email": "teszt_l@elek.hu",
+    "email_confirm": "teszt_l@elek.hu",
     "password": "1234_Abcd",
     "password_confirm": "1234_Abcd"
 },
@@ -24,8 +24,8 @@ TESTUSER = [
     "lastname": "Elek",
     "firstname": "",
     "phone_number": "+91123456789",
-    "email": "test_f@elek.hu",
-    "email_confirm": "test_f@elek.hu",
+    "email": "teszt_f@elek.hu",
+    "email_confirm": "teszt_f@elek.hu",
     "password": "1234_Abcd",
     "password_confirm": "1234_Abcd"
 },
@@ -34,8 +34,8 @@ TESTUSER = [
     "lastname": "Elek",
     "firstname": "Teszt",
     "phone_number": "",
-    "email": "test_p@elek.hu",
-    "email_confirm": "test_p@elek.hu",
+    "email": "teszt_p@elek.hu",
+    "email_confirm": "teszt_p@elek.hu",
     "password": "1234_Abcd",
     "password_confirm": "1234_Abcd"
 },
@@ -44,8 +44,8 @@ TESTUSER = [
     "lastname": "5678",
     "firstname": "1234",
     "phone_number": "abcdefghij",
-    "email": "test_invalid@elek.hu",
-    "email_confirm": "test_invalid@elek.hu",
+    "email": "teszt_invalid@elek.hu",
+    "email_confirm": "teszt_invalid@elek.hu",
     "password": "1234_Abcd",
     "password_confirm": "1234_Abcd"
 },
@@ -64,8 +64,8 @@ TESTUSER = [
     "lastname": "Elek",
     "firstname": "Teszt",
     "phone_number": "+91123456789",
-    "email": "test_c@test.hu",
-    "email_confirm": "test__c@test.hu",
+    "email": "teszt_fc@elek.hu",
+    "email_confirm": "teszt_cf@elek.hu",
     "password": "1234_Abcd",
     "password_confirm": "1234_Abcd"
 },
@@ -74,8 +74,8 @@ TESTUSER = [
     "lastname": "Elek",
     "firstname": "Teszt",
     "phone_number": "+91123456789",
-    "email": "test_p@test.hu",
-    "email_confirm": "test_p@test.hu",
+    "email": "teszt_p@elek.hu",
+    "email_confirm": "teszt_p@elek.hu",
     "password": "1234",
     "password_confirm": "1234"
 },
@@ -84,9 +84,29 @@ TESTUSER = [
     "lastname": "Elek",
     "firstname": "Teszt",
     "phone_number": "+91123456789",
-    "email": "test_pc@test.hu",
-    "email_confirm": "test_pc@test.hu",
+    "email": "teszt_pc@elek.hu",
+    "email_confirm": "teszt_pc@elek.hu",
     "password": "1234_Abcd",
     "password_confirm": "1234_Abcdd"
+},
+########## 10 registration with wrong email & password confirmation
+    {
+    "lastname": "Elek",
+    "firstname": "Teszt",
+    "phone_number": "+91123456789",
+    "email": "test_empc@elek.hu",
+    "email_confirm": "test_epc@elek.hu",
+    "password": "1234_Abcd",
+    "password_confirm": "1234_Abcddddddddddddd"
+},
+########## 11 registration with short names
+    {
+    "lastname": "Lo",
+    "firstname": "He",
+    "phone_number": "+91123456789",
+    "email": "helo@belo.hu",
+    "email_confirm": "helo@belo.hu",
+    "password": "1234_Abcd",
+    "password_confirm": "1234_Abcd"
 },
     ]

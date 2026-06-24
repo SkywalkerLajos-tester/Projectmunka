@@ -9,7 +9,7 @@ from selenium.webdriver.support.select import Select
 class RegistrationPage(GeneralPage):
     def __init__(self, browser, URL):
         super().__init__(browser, URL)
-        self.wait = WebDriverWait(self.browser, 5)
+        self.wait = WebDriverWait(self.browser, 10)
 
     def last_name(self):
         return self.wait.until(EC.element_to_be_clickable((By.ID, "lastName")))
@@ -35,6 +35,9 @@ class RegistrationPage(GeneralPage):
     def button_registration(self):
         return self.wait.until(EC.element_to_be_clickable((By.XPATH, "(//button[@type='submit'])[2]")))
 
+    def registration_text(self):
+        return self.wait.until(EC.element_to_be_clickable((By.XPATH, "//h3[text()='Registration']")))
+
 
 ##################ERROR MESSAGES#################################x
 
@@ -53,8 +56,8 @@ class RegistrationPage(GeneralPage):
     def error_email_wrong_format(self):
         return self.wait.until(EC.visibility_of_element_located((By.XPATH, "//div[4]/small[2]")))
 
-    def error_confirm_email_missing(self):
-        return self.wait.until(EC.visibility_of_element_located((By.XPATH, "//small[contains(text(), 'Email does not match')]")))
+    def error_confirm_email(self):
+        return self.wait.until(EC.visibility_of_element_located((By.XPATH, "//*[contains(text(), 'Email does not match')]")))
 
     def error_password(self):
         return self.wait.until(EC.visibility_of_element_located((By.XPATH, "//div[6]/small")))

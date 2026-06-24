@@ -1,4 +1,4 @@
- 
+
 -	Klónozd a repót
 -	Indítsd el a Docker Desktop-ot (vagy az Engine-t, ha linux-ról vagy és nincs Desktop)
 -	Nyiss egy terminált abban a mappában, ahol a compose.yaml file van

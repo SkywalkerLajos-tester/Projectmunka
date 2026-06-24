@@ -1,0 +1,35 @@
+version: "3.9"
+services:
+  database:
+    image: mysql:8.0.36
+    volumes:
+      - "./:/docker-entrypoint-initdb.d"
+    container_name: database
+    restart: unless-stopped
+    environment:
+      - MYSQL_DATABASE=moovsmart
+      - MYSQL_ROOT_PASSWORD=test1234
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      timeout: 20s
+      retries: 5
+
+  backend:
+    image: csineva/moovsmart-backend:sprint-2
+    container_name: backend
+    depends_on:
+      database:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/moovsmart?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
+  frontend:
+    image: csineva/moovsmart-frontend:sprint-2
+    container_name: frontend
+    ports:
+      - "4200:4200"
+    depends_on:
+      - backend

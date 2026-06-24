@@ -6,6 +6,7 @@ def get_configured_chrome_driver():
     options.add_experimental_option('detach', True)
     options.add_argument('--guest')
     options.add_argument("--lang=hu")
+    options.add_argument("--headless")
     browser = webdriver.Chrome(options=options)
     browser.maximize_window()
     return browser

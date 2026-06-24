@@ -28,6 +28,7 @@ class TestRegistration:
     def teardown_method(self):
         self.main_page.close_browser()
 
+
     def fill_registration_form_and_submit(self, user_data, click_submit=True):
         """Helper metódus az űrlap kitöltéséhez és a beküldéshez."""
         allure.attach(json.dumps(user_data, indent=4, ensure_ascii=False),

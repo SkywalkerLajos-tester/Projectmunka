@@ -32,6 +32,14 @@ jobs:
       with:
         compose-file: "./sprint1/compose.yaml"
 
+    - name: Wait for 15 second an test services
+      if: always()
+      run: |
+          sleep 15s
+          nc -vz localhost 3306 # db        
+          nc -vz localhost 8080 # backend   
+          nc -vz localhost 4200 # frontend
+
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names

@@ -5,16 +5,14 @@ from selenium.webdriver.chrome.options import Options
 from sprint1.POM.page_models.base_page_a import BasePage
 from sprint1.POM.page_models.error_page_a import ErrorPage
 from sprint1.POM.page_models.main_page_a import MoovSmartMain
+from sprint1.POM.create_driver import get_configured_chrome_driver
+from sprint1.POM.testdata.testurls import BASE_URL
 
 
 class TestErrorPage:  # ez a teszt
     def setup_method(self):
-        options = Options()
-        options.add_argument("--start-maximized")
-        options.add_argument("--lang=hu")
-        self.browser = webdriver.Chrome(options=options)
-        self.browser.get("http://localhost:4200")
-        self.main_page_a = MoovSmartMain(self.browser, "http://localhost:4200")
+        self.browser = get_configured_chrome_driver()
+        self.main_page_a = MoovSmartMain(self.browser, BASE_URL)
         self.error_page = ErrorPage(self.browser)
         self.base_page_a = BasePage(self.browser)
 

@@ -48,7 +48,7 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
       run: |
-        python -m pytest ./sprint1/POM/tests/test_registration.py --alluredir=allure-results
+        python -m pytest ./sprint1/POM/tests/test_property_edit.py --alluredir=allure-results
         
 
     - name: Allure Report action from marketplace

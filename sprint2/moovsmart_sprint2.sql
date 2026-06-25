@@ -284,7 +284,9 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'d@k.hu','Dora','Kozics','$2a$10$nTOXqx..SNILRRySWFLOBuBB2a/VkEKEYYGXFyfZUoSwnFArSADBK','+36301112222',NULL),(2,'i@k.hu','Imre','Kovács','$2a$10$7rWEfJEK5NIly0CVsdEjdekuHS7FDoOrxyqicGbH.mInj3tyeR5w6','+36301122222',NULL),(3,'cs@r.hu','Csanád','Révész','$2a$10$1PAoCiuB3PHfllsYjLD4IuPeGfvpNNhaPWCZWMDIuL3T6bwO9pT1.','+36301222222',NULL);
+INSERT INTO `users` VALUES (1, 'test1@test.hu', 'Dora', 'Kozics', '$2a$10$M0ilenxACv7UREuBxN6X3.jpptKasU57BJhRTc86xT75sUKO3Ut3i', '+36301112222'),
+       			   (2, 'test2@test.hu', 'Imre', 'Kovács', '$2a$10$OMUjOKaFFfkURK.wpUXuxeURRIp2QPNKHCRSQnB6DvcNVSYFpE2Sq', '+36301122222'),
+                           (3, 'test3@test.hu', 'Csanád', 'Révész', '$2a$10$B1cGfFQTDUSI2CpQQH6D3OwsuDajPYqbXfUrxNMtYrwpudqUwbRXy', '+36301222222');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 DROP TABLE IF EXISTS `verification_token`;

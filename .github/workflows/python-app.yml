@@ -8,7 +8,7 @@ on:
     branches: [ "master" ]
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build:
@@ -21,10 +21,25 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: "3.13"
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+    - name: Run docker-compose
+      uses: hoverkraft-tech/compose-action@v2.0.1
+      with:
+        compose-file: "./sprint1/compose.yaml"
+
+    - name: Wait for 15 second an test services
+      if: always()
+      run: |
+          sleep 15s
+          nc -vz localhost 3306 # db        
+          nc -vz localhost 8080 # backend   
+          nc -vz localhost 4200 # frontend
+
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
@@ -33,4 +48,22 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
       run: |
-        pytest
+        python -m pytest ./sprint1/POM/tests/test_property_delete.py --alluredir=allure-results
+        
+
+    - name: Allure Report action from marketplace
+      uses: simple-elf/allure-report-action@master
+      if: always()
+      with:
+          allure_results: allure-results
+          allure_history: allure-history
+          keep_reports: 20
+
+    - name: Deploy report to Github Pages
+      if: always()
+      uses: peaceiris/actions-gh-pages@v2
+      env:
+          PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PUBLISH_BRANCH: gh-pages
+          PUBLISH_DIR: allure-history
+

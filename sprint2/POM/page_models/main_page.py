@@ -25,7 +25,7 @@ class MoovSmartMain(GeneralPage):
         return self.wait.until(EC.element_to_be_clickable((By.XPATH, "(//div[@class='my-navbar-right-links']/a)[2]")))
 
     def login(self):
-        return self.wait.until(EC.element_to_be_clickable((By.XPATH, "(//div[@class='my-navbar-right-links']/a)[1]")))
+        return self.wait.until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text(), 'Sign In')]")))
 
     def logo_prohouse(self):
         return self.wait.until(EC.element_to_be_clickable((By.XPATH, "//a[@class='brand']")))

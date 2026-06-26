@@ -434,3 +434,4 @@ class TestRegistration:
 
         # 4. Az Asszertáció
         assert is_in_db is False, f"Hiba! A regisztráció sikeres: a(z) '{target_email}' email cím megtalálható az adatbázisban!"
+

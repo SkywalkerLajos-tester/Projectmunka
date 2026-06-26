@@ -5,13 +5,13 @@ import allure
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-from sprint1.POM.page_models.main_page import MoovSmartMain
-from sprint1.POM.page_models.registration_page import RegistrationPage
-from sprint1.POM.page_models.login_page import LoginPage
-from sprint1.POM.page_models.logged_in_page import LoggedIn
-from sprint1.POM.page_models.my_properties_page import MyProperties
-from sprint1.POM.create_driver import get_configured_chrome_driver
-from sprint1.POM.testdata.testurls import BASE_URL
+from sprint2.POM.page_models.main_page import MoovSmartMain
+from sprint2.POM.page_models.registration_page import RegistrationPage
+from sprint2.POM.page_models.login_page import LoginPage
+from sprint2.POM.page_models.logged_in_page import LoggedIn
+from sprint2.POM.page_models.my_properties_page import MyProperties
+from sprint2.POM.create_driver import get_configured_chrome_driver
+from sprint2.POM.testdata.testurls import BASE_URL
 
 
 class TestPropertyDelete:

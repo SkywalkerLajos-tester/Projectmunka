@@ -23,7 +23,7 @@ class LoggedIn(GeneralPage):
         self.my_properties_desktop_btn = (By.CSS_SELECTOR, "a[routerlink='/my-property-list']")
 
     def button_exit(self):
-        return self.wait.until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text(), 'Logout')]")))
+        return self.wait.until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text(), 'Logout') or contains(text(), 'Kijelentkezés')]")))
 
     def navigate_to_my_properties(self):
         time.sleep(1)

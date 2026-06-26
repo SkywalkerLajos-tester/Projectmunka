@@ -384,11 +384,23 @@ class TestRegistration:
         allure.dynamic.description(description)
         allure.dynamic.tag(*tag)
 
-        # 1. Elküldjük a regisztrációt a felületről
-        self.fill_registration_form_and_submit(TESTUSER[9])
+        self.fill_registration_form_and_submit(TESTUSER[9], click_submit=False)
+
+        assert self.registration_page.error_confirm_email().is_displayed()
+        assert self.registration_page.error_confirm_email().text == "Email does not match"
+
+        self.registration_page.registration_text().click()
+
+        assert self.registration_page.error_confirm_password().is_displayed()
+        assert self.registration_page.error_confirm_password().text == "Password does not match"
 
         # 2. Várunk egy picit, hogy a backend elmenthesse az adatot (a hálózat/konténer sebességétől függően)
-        time.sleep(1)
+        time.sleep(0.5)
+        button = self.registration_page.button_registration()
+        self.browser.execute_script("arguments[0].scrollIntoView({block: 'center'});", button)
+        time.sleep(0.5)
+        button.click()
+        time.sleep(0.5)
 
         # 3. Közvetlen ellenőrzés a Docker adatbázisban
         target_email = TESTUSER[9]["email"]
@@ -396,14 +408,6 @@ class TestRegistration:
 
         # 4. Az Asszertáció
         assert is_in_db is False, f"Hiba! A regisztráció sikeres: a(z) '{target_email}' email cím megtalálható az adatbázisban!"
-
-        error_msg = self.registration_page.error_confirm_email()
-        assert error_msg.is_displayed()
-        assert error_msg.text == "Email does not match"
-
-        error_msg = self.registration_page.error_confirm_password()
-        assert error_msg.is_displayed()
-        assert error_msg.text == "Password does not match"
 
 
     @allure.title("Registration eng tc12")

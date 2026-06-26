@@ -3,13 +3,13 @@ import allure
 import json
 import time
 
-from sprint1.POM.page_models.main_page import MoovSmartMain
-from sprint1.POM.page_models.registration_page import RegistrationPage
-from sprint1.POM.page_models.login_page import LoginPage
-from sprint1.POM.page_models.logged_in_page import LoggedIn
-from sprint1.POM.create_driver import get_configured_chrome_driver
-from sprint1.POM.testdata.testuser_reg import TESTUSER
-from sprint1.POM.testdata.testurls import BASE_URL
+from sprint2.POM.page_models.main_page import MoovSmartMain
+from sprint2.POM.page_models.registration_page import RegistrationPage
+from sprint2.POM.page_models.login_page import LoginPage
+from sprint2.POM.page_models.logged_in_page import LoggedIn
+from sprint2.POM.create_driver import get_configured_chrome_driver
+from sprint2.POM.testdata.testuser_reg import TESTUSER
+from sprint2.POM.testdata.testurls import BASE_URL
 
 
 class TestRegistration:
@@ -20,13 +20,13 @@ class TestRegistration:
         self.login_page = LoginPage(self.browser, BASE_URL)
         self.logged_in_page = LoggedIn(self.browser, BASE_URL)
 
-        # Minden teszt ezzel kezdődik, felesleges 11-szer leírni
+        # Minden teszt ezzel kezdődik
         self.main_page.open_webpage()
         self.main_page.select_language_en()
         self.main_page.registration().click()
 
-    def teardown_method(self):
-        self.main_page.close_browser()
+    # def teardown_method(self):
+    #     self.main_page.close_browser()
 
 
     def fill_registration_form_and_submit(self, user_data, click_submit=True):

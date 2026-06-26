@@ -1,12 +1,12 @@
 import pytest
 import allure
 
-from sprint1.POM.page_models.main_page import MoovSmartMain
-from sprint1.POM.page_models.registration_page import RegistrationPage
-from sprint1.POM.page_models.login_page import LoginPage
-from sprint1.POM.page_models.logged_in_page import LoggedIn
-from sprint1.POM.create_driver import get_configured_chrome_driver
-from sprint1.POM.testdata.testurls import BASE_URL
+from sprint2.POM.page_models.main_page import MoovSmartMain
+from sprint2.POM.page_models.registration_page import RegistrationPage
+from sprint2.POM.page_models.login_page import LoginPage
+from sprint2.POM.page_models.logged_in_page import LoggedIn
+from sprint2.POM.create_driver import get_configured_chrome_driver
+from sprint2.POM.testdata.testurls import BASE_URL
 
 
 class TestLogin:
@@ -36,7 +36,7 @@ class TestLogin:
     @pytest.mark.parametrize(
         "email, password, title, description, tag",
         [
-            ("test1@test.hu", "1234_Abcd", "Login eng tc01", "Login valid - happy path", ["All good", "No error", "Success"])
+            ("drlonnvcrdmnlcgxjt@gonrr.net", "1234_Abcd", "Login eng tc01", "Login valid - happy path", ["All good", "No error", "Success"])
         ]
     )
     def test_login_valid(self, email, title, password, description, tag):
@@ -54,9 +54,9 @@ class TestLogin:
         "email, password, title, description, tag",
         [
             ("", "1234_Abcd", "Login eng tc02", "Login without email", ["Invalid login", "Without email", "Wrong error message", "Please enter an email"]),
-            ("test1@test.hu", "", "Login eng tc03", "Login without password", ["Invalid login", "Without password", "Wrong error message", "Please enter your password"]),
-            ("te1st1@test.hu", "1234_Abcd", "Login eng tc04", "Login with wrong email", ["Invalid login", "With wrong email"]),
-            ("test1@test.hu", "1234_Abc", "Login eng tc05", "Login with wrong password", ["Invalid login", "With wrong password"]),
+            ("drlonnvcrdmnlcgxjt@gonrr.net", "", "Login eng tc03", "Login without password", ["Invalid login", "Without password", "Wrong error message", "Please enter your password"]),
+            ("drlonnvcrdmnlcgxjt@gonrrr.net", "1234_Abcd", "Login eng tc04", "Login with wrong email", ["Invalid login", "With wrong email"]),
+            ("drlonnvcrdmnlcgxjt@gonrr.net", "1234_Abc", "Login eng tc05", "Login with wrong password", ["Invalid login", "With wrong password"]),
         ]
     )
     def test_login_invalid_cases(self, email, password, title, description, tag):

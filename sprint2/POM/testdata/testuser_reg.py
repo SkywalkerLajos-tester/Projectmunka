@@ -4,8 +4,8 @@ TESTUSER = [
     "lastname": "Elek",
     "firstname": "Teszt",
     "phone_number": "+91123456789",
-    "email": "2teszt@elek.hu",
-    "email_confirm": "2teszt@elek.hu",
+    "email": "teszt@elek.hu",
+    "email_confirm": "teszt@elek.hu",
     "password": "1234_Abcd",
     "password_confirm": "1234_Abcd"
 },

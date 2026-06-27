@@ -1,7 +1,5 @@
 import allure
 
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
 from sprint1.POM.page_models.base_page_a import BasePage
 from sprint1.POM.page_models.error_page_a import ErrorPage
 from sprint1.POM.page_models.main_page_a import MoovSmartMain

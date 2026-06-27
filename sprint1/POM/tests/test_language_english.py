@@ -1,10 +1,8 @@
 import allure
-from selenium.webdriver.chrome.options import Options
-from selenium import webdriver
+
 from sprint1.POM.page_models.main_page_a import MoovSmartMain
 from sprint1.POM.create_driver import get_configured_chrome_driver
 from sprint1.POM.testdata.testurls import BASE_URL
-
 
 
 class TestLanguageEnglish:
@@ -15,14 +13,12 @@ class TestLanguageEnglish:
         self.main_page = MoovSmartMain(self.browser, BASE_URL)
         self.main_page.open_webpage()
 
-
     def teardown_method(self):
         self.browser.close()
 
     @allure.title("Nyelv egységesítése a főoldalon")
     @allure.severity(allure.severity_level.CRITICAL)
     @allure.tag("Positive", "Language - English", "Read")
-
     def test_language_english_main(self):
         home_page = MoovSmartMain(self.browser, BASE_URL)  # meghívjuk egy másik fájlból az ott definiált változókat
         home_page.select_language("English")

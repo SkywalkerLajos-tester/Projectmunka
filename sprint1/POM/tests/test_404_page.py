@@ -13,6 +13,7 @@ class TestErrorPage:  # ez a teszt
         self.main_page_a = MoovSmartMain(self.browser, BASE_URL)
         self.error_page = ErrorPage(self.browser)
         self.base_page_a = BasePage(self.browser)
+        self.main_page_a.open_webpage()
 
     def teardown_method(self):
         self.browser.quit()

@@ -21,7 +21,7 @@ class TestPropertyDelete:
         self.registration_page = RegistrationPage(self.browser, BASE_URL)
         self.login_page = LoginPage(self.browser, BASE_URL)
         self.logged_in_page = LoggedIn(self.browser, BASE_URL)
-        self.my_properties_page_ma = MyProperties(self.browser, BASE_URL)
+        self.my_properties_page = MyProperties(self.browser, BASE_URL)
 
         # Minden teszt ezekkel a lépésekkel indul, így ideális itt futtatni őket
         self.main_page.open_webpage()
@@ -45,18 +45,18 @@ class TestPropertyDelete:
         self.logged_in_page.navigate_to_my_properties()
 
         WebDriverWait(self.browser, 10).until(
-            EC.presence_of_element_located(self.my_properties_page_ma.property_cards)
+            EC.presence_of_element_located(self.my_properties_page.property_cards)
         )
         # 1. Lekérjük a törlés előtti lista hosszát
-        initial_properties = self.my_properties_page_ma.get_property_list_elements()
+        initial_properties = self.my_properties_page.get_property_list_elements()
         initial_count = len(initial_properties)
         # 2. Elvégezzük a törlést
-        self.my_properties_page_ma.click_delete_on_property(property_address)
-        self.my_properties_page_ma.click_confirm_delete(property_address)
+        self.my_properties_page.click_delete_on_property(property_address)
+        self.my_properties_page.click_confirm_delete(property_address)
         # Várunk, hogy a frontend frissítse a listát (eltűnjön a törölt elem)
         time.sleep(0.8)
         # 3. Lekérjük a törlés utáni lista hosszát
-        after_delete_properties = self.my_properties_page_ma.get_property_list_elements()
+        after_delete_properties = self.my_properties_page.get_property_list_elements()
         after_delete_count = len(after_delete_properties)
 
         # 4. Assert: A darabszámnak pontosan eggyel kevesebbnek kell lennie
@@ -79,17 +79,17 @@ class TestPropertyDelete:
         self.logged_in_page.navigate_to_my_properties()
 
         WebDriverWait(self.browser, 10).until(
-            EC.presence_of_element_located(self.my_properties_page_ma.property_cards)
+            EC.presence_of_element_located(self.my_properties_page.property_cards)
         )
         # 1. Lekérjük a kiinduló lista hosszát
-        initial_properties = self.my_properties_page_ma.get_property_list_elements()
+        initial_properties = self.my_properties_page.get_property_list_elements()
         initial_count = len(initial_properties)
         # 2. Megnyitjuk a törlést, majd a Mégse gombra kattintunk
-        self.my_properties_page_ma.click_delete_on_property(property_address)
-        self.my_properties_page_ma.click_cancel_delete(property_address)
+        self.my_properties_page.click_delete_on_property(property_address)
+        self.my_properties_page.click_cancel_delete(property_address)
         time.sleep(0.5)
         # 3. Lekérjük a hosszát a visszavonás után is
-        after_cancel_properties = self.my_properties_page_ma.get_property_list_elements()
+        after_cancel_properties = self.my_properties_page.get_property_list_elements()
         after_cancel_count = len(after_cancel_properties)
 
         # 4. Assert: A darabszámnak meg kell egyeznie az eredetivel

@@ -1,0 +1,1 @@
+[{"uid":"9529379609368ffa","name":"TC01 - Ingatlan törlés.","time":{"start":1782651713804,"stop":1782651713804,"duration":0},"status":"broken","severity":"critical"},{"uid":"291d7d201d7eb0ec","name":"TC02 - Ingatlan törlésének visszavonása.","time":{"start":1782651715153,"stop":1782651715153,"duration":0},"status":"broken","severity":"critical"}]

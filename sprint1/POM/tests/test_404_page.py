@@ -14,6 +14,7 @@ class TestErrorPage:  # ez a teszt
         self.error_page = ErrorPage(self.browser)
         self.base_page_a = BasePage(self.browser)
         self.main_page_a.open_webpage()
+        self.base_page_a.wait_for_app_ready()
 
     def teardown_method(self):
         self.browser.quit()

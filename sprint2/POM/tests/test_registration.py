@@ -25,8 +25,8 @@ class TestRegistration:
         self.main_page.select_language_en()
         self.main_page.registration().click()
 
-    # def teardown_method(self):
-    #     self.main_page.close_browser()
+    def teardown_method(self):
+        self.main_page.close_browser()
 
 
     def fill_registration_form_and_submit(self, user_data, click_submit=True):

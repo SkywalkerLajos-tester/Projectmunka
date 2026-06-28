@@ -69,7 +69,7 @@ class TestRegistration:
         allure.dynamic.tag(*tag)
 
         self.fill_registration_form_and_submit(TESTUSER[0])
-        assert self.browser.current_url == "http://localhost:4200/"
+        assert self.registration_page.successful_registration_without_error().is_displayed()
 
     @allure.title("Registration eng tc02")
     @allure.severity(allure.severity_level.CRITICAL)
@@ -88,7 +88,7 @@ class TestRegistration:
         error_msg = self.registration_page.error_email_missing_or_wrong_single()
         assert error_msg.is_displayed()
         assert error_msg.text == "Email address is already taken!"
-        assert self.browser.current_url != "http://localhost:4200/"
+        assert self.registration_page.unsuccessful_registration().is_displayed()
 
     @allure.title("Registration eng tc03")
     @allure.severity(allure.severity_level.CRITICAL)
@@ -107,7 +107,7 @@ class TestRegistration:
         error_msg = self.registration_page.error_last_name()
         assert error_msg.is_displayed()
         assert error_msg.text == "Please enter your last name"
-        assert self.browser.current_url != "http://localhost:4200/"
+        assert self.registration_page.unsuccessful_registration().is_displayed()
 
     @allure.title("Registration eng tc04")
     @allure.severity(allure.severity_level.CRITICAL)
@@ -126,7 +126,7 @@ class TestRegistration:
         error_msg = self.registration_page.error_first_name()
         assert error_msg.is_displayed()
         assert error_msg.text == "Please enter your first name"
-        assert self.browser.current_url != "http://localhost:4200/"
+        assert self.registration_page.unsuccessful_registration().is_displayed()
 
     @allure.title("Registration eng tc05")
     @allure.severity(allure.severity_level.CRITICAL)
@@ -144,7 +144,7 @@ class TestRegistration:
         self.fill_registration_form_and_submit(TESTUSER[3])
 
         assert not self.registration_page.error_phone_number().is_displayed()
-        assert self.browser.current_url == "http://localhost:4200/"
+        assert self.registration_page.successful_registration_with_error().is_displayed()
 
     @allure.title("Registration eng tc06")
     @allure.severity(allure.severity_level.CRITICAL)
@@ -160,7 +160,7 @@ class TestRegistration:
         allure.dynamic.tag(*tag)
 
         self.fill_registration_form_and_submit(TESTUSER[4])
-        assert self.browser.current_url == "http://localhost:4200/registration-form"
+        assert not self.registration_page.successful_registration_without_error().is_displayed()
 
     @allure.title("Registration eng tc07")
     @allure.severity(allure.severity_level.CRITICAL)
@@ -179,7 +179,7 @@ class TestRegistration:
         error_msg = self.registration_page.error_email_missing_or_wrong_single()
         assert error_msg.is_displayed()
         assert error_msg.text == "Not a proper email format!"
-        assert self.browser.current_url != "http://localhost:4200/"
+        assert self.registration_page.unsuccessful_registration().is_displayed()
 
     @allure.title("Registration eng tc08")
     @allure.severity(allure.severity_level.CRITICAL)
@@ -206,7 +206,7 @@ class TestRegistration:
         time.sleep(0.5)
         button.click()
         time.sleep(0.5)
-        assert self.browser.current_url == "http://localhost:4200/registration-form"
+        assert not self.registration_page.successful_registration_with_error().is_displayed()
 
     @allure.title("Registration eng tc09")
     @allure.severity(allure.severity_level.CRITICAL)
@@ -225,7 +225,7 @@ class TestRegistration:
         error_msg = self.registration_page.error_password()
         assert error_msg.is_displayed()
         assert error_msg.text == "Please enter a password"
-        assert self.browser.current_url != "http://localhost:4200/"
+        assert self.registration_page.unsuccessful_registration().is_displayed()
 
     @allure.title("Registration eng tc10")
     @allure.severity(allure.severity_level.CRITICAL)
@@ -244,7 +244,7 @@ class TestRegistration:
         error_msg = self.registration_page.error_confirm_password()
         assert error_msg.is_displayed()
         assert error_msg.text == "Password does not match"
-        assert self.browser.current_url != "http://localhost:4200/"
+        assert self.registration_page.unsuccessful_registration().is_displayed()
 
     @allure.title("Registration eng tc11")
     @allure.severity(allure.severity_level.CRITICAL)
@@ -273,8 +273,8 @@ class TestRegistration:
         self.browser.execute_script("arguments[0].scrollIntoView({block: 'center'});", button)
         time.sleep(0.5)
         button.click()
-        time.sleep(0.5)
-        assert self.browser.current_url == "http://localhost:4200/registration-form"
+        #time.sleep(0.5)
+        assert not self.registration_page.successful_registration_with_error().is_displayed()
 
     @allure.title("Registration eng tc12")
     @allure.severity(allure.severity_level.CRITICAL)
@@ -290,4 +290,4 @@ class TestRegistration:
 
         self.fill_registration_form_and_submit(TESTUSER[10])
 
-        assert self.browser.current_url != "http://localhost:4200/"
+        assert not self.registration_page.successful_registration_without_error().is_displayed()

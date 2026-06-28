@@ -65,3 +65,15 @@ class RegistrationPage(GeneralPage):
     def error_confirm_password(self):
         return self.wait.until(EC.visibility_of_element_located((By.XPATH, "//div[7]/small")))
 
+
+#################Sending classes#################################x
+
+    def successful_registration_without_error(self):
+        return self.wait.until(EC.visibility_of_element_located((By.XPATH, "//div/form[@class='main-form ng-dirty ng-touched ng-valid ng-submitted']")))
+
+    def successful_registration_with_error(self):
+        return self.wait.until(EC.visibility_of_element_located((By.XPATH, "//div/form[@class='main-form ng-invalid ng-dirty ng-touched ng-submitted']")))
+
+    def unsuccessful_registration(self):
+        return self.wait.until(EC.visibility_of_element_located((By.XPATH, "//div/form[contains(@class, 'ng-invalid')]")))
+

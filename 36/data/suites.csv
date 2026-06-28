@@ -1,3 +1,3 @@
 "DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
-"","0","TC01 - Ingatlan törlés.","sprint1.POM.tests","2026-06-28","broken","2026-06-28","TestPropertyDelete","test_property_delete","",""
 "","0","TC02 - Ingatlan törlésének visszavonása.","sprint1.POM.tests","2026-06-28","broken","2026-06-28","TestPropertyDelete","test_property_delete","",""
+"","0","TC01 - Ingatlan törlés.","sprint1.POM.tests","2026-06-28","broken","2026-06-28","TestPropertyDelete","test_property_delete","",""

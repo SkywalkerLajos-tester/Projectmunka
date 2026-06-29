@@ -1,9 +1,10 @@
 import allure
 
+from sprint2.POM.page_models.base_page_a import BasePage
 from sprint2.POM.page_models.main_page_a import MoovSmartMain
 from sprint2.POM.create_driver import get_configured_chrome_driver
 from sprint2.POM.testdata.testurls import BASE_URL
-
+from selenium.webdriver.support.ui import Select
 
 
 class TestLanguageEnglish:
@@ -12,8 +13,9 @@ class TestLanguageEnglish:
         self.browser = get_configured_chrome_driver()
         self.main_page_a = MoovSmartMain(self.browser, BASE_URL)
         self.main_page = MoovSmartMain(self.browser, BASE_URL)
+        self.base_page_a = BasePage(self.browser)
         self.main_page.open_webpage()
-
+        self.base_page_a.wait_for_app_ready()
 
     def teardown_method(self):
         self.browser.close()
@@ -21,14 +23,15 @@ class TestLanguageEnglish:
     @allure.title("Nyelv egységesítése a főoldalon")
     @allure.severity(allure.severity_level.CRITICAL)
     @allure.tag("Positive", "Language - English", "Read")
-
     def test_language_english_main(self):
         home_page = MoovSmartMain(self.browser, BASE_URL)  # meghívjuk egy másik fájlból az ott definiált változókat
+        self.browser.maximize_window()
+        home_page.open_webpage()
         home_page.select_language("English")
 
         assert home_page.get_buy().text == "Buy"  # ellenőrizzük, hogy a "buy" gombon "Buy" felirat van-e
         assert home_page.rent_button().text == "Rent"
-        assert home_page.sing_in_button().text == "Sign In"
+        assert home_page.sign_in_button().text == "Sign In"
         assert home_page.registration_button().text == "Registration"
         assert home_page.header_title().text == "Find your new community today"
         assert home_page.get_search_placeholder() == "Enter the city"
@@ -40,6 +43,7 @@ class TestLanguageEnglish:
     @allure.tag("Positive", "Language - English", "Read")
     def test_language_english_buy(self):
         home_page = MoovSmartMain(self.browser, BASE_URL)  # meghívjuk egy másik fájlból az ott definiált változókat
+        home_page.open_webpage()
         home_page.select_language("English")
         home_page.get_buy().click()
 
@@ -47,6 +51,20 @@ class TestLanguageEnglish:
         assert home_page.for_sale_button().text == "For Sale\nFor Rent"
         assert home_page.city_placeholder().get_attribute("placeholder") == "City"
         assert home_page.search_button().text == "Search"
+
+        dropdown = Select(home_page.property_type())  # létrehoz egy objektumot a select elemből
+        options = [option.text for option in dropdown.options]  # visszaadja az összes elemet
+
+        expected = ["Property type", "House", "Flat", "Lot"]  # elvárás, hogy mik legyenek a legördülő menüben
+        assert options == expected  # összehasonlítás, hogy mi az elvárás és mi az aktuális
+
+        # a legördülő menü szövegének ellenőzése másképp, úgy, hogy ha csak az egyik szó változik akkor az azonnal kiderül
+        # dropdown = Select(home_page.property_type())
+
+        # assert dropdown.options[0].text == "Property type"
+        # assert dropdown.options[1].text == "House"
+        # assert dropdown.options[2].text == "Flat"
+        # assert dropdown.options[3].text == "Lot"
 
     @allure.title("Nyelv egységesítése a kiadó oldalon")
     @allure.severity(allure.severity_level.CRITICAL)
@@ -67,11 +85,11 @@ class TestLanguageEnglish:
     def test_language_english_sign_in(self):
         home_page = MoovSmartMain(self.browser, BASE_URL)  # meghívjuk egy másik fájlból az ott definiált változókat
         home_page.select_language("English")
-        home_page.sing_in_button().click()
+        home_page.sign_in_button().click()
 
         assert home_page.email().text == "Email address"  # ellenőrizzük, hogy ahova az e-mail címet kell beírni ott "Email address" felirat van-e
         assert home_page.password().text == "Password"
-        assert home_page.sing_in_button().text == "Sign In"
+        assert home_page.sign_in_button().text == "Sign In"
         assert home_page.text_center().text == "Don't have an account yet? Register now!"
 
     @allure.title("Nyelv egységesítése a regisztráció oldalán")

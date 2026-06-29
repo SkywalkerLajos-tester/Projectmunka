@@ -11,7 +11,9 @@ class TestUresKerese:
         self.browser = get_configured_chrome_driver()
         self.main_page_a = MoovSmartMain(self.browser, BASE_URL)
         self.main_page = MoovSmartMain(self.browser, BASE_URL)
+        self.base_page_a = BasePage(self.browser)
         self.main_page.open_webpage()
+        self.base_page_a.wait_for_app_ready()
 
     def teardown_method(self):
         self.browser.quit()

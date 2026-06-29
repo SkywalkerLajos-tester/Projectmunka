@@ -1,3 +1,5 @@
+import pytest
+from selenium.common import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -20,3 +22,14 @@ class BasePage:
         WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable(self.suggestion)).click()
 
         self.driver.find_element(*self.search_button).click()
+
+    def wait_for_app_ready(self, timeout=30):
+        try:
+            WebDriverWait(self.driver, timeout).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, "input.geoapify-autocomplete-input"))
+            )
+        except TimeoutException:
+            pytest.fail(
+                f"Az alkalmazás {timeout} mp alatt nem töltődött be. "
+                f"Ellenőrizd, hogy a Docker konténerek futnak-e."
+            )

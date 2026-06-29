@@ -75,8 +75,12 @@ class MoovSmartMain(GeneralPage):
     def get_search_placeholder(self):
         return self.browser.find_element(*self.SEARCH_INPUT).get_attribute("placeholder")
 
+    #def get_buy(self):
+    #    return self.browser.find_element(By.XPATH, "(//a[@class='navlink hover-underline-animation'])[1]")
+
     def get_buy(self):
-        return self.browser.find_element(By.XPATH, "(//a[@class='navlink hover-underline-animation'])[1]")
+        return WebDriverWait(self.browser, 10).until(
+            EC.visibility_of_element_located((By.LINK_TEXT, "Buy")))
 
     def header_title(self):
         return self.browser.find_element(By.XPATH, '//div[@class="header-title"]')

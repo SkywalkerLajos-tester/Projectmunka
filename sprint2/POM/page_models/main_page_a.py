@@ -12,12 +12,18 @@ class MoovSmartMain(GeneralPage):
 
     SEARCH_INPUT = (By.CSS_SELECTOR, "input.geoapify-autocomplete-input")
     SUGGESTION_ITEM = (By.CSS_SELECTOR, ".geoapify-autocomplete-item")
+    SIGN_IN = (By.XPATH, "//a[normalize-space()='Sign In']")
+    REGISTRATION = (By.XPATH, "//a[normalize-space()='Registration']")
+    SEARCH_BUTTON = (By.XPATH, "//button[normalize-space()='Search']")
+    PROPERTY_TYPE = (By.ID, "propertyType")
 
     def rent_button(self):
-        return self.browser.find_element(By.XPATH, " (//a[@class='navlink hover-underline-animation'])[2]")
+        return WebDriverWait(self.browser, 10).until(
+            EC.visibility_of_element_located((By.LINK_TEXT, "Rent")))
 
-    def sing_in_button(self):
-        return self.browser.find_element(By.XPATH, "(//div[@class='my-navbar-right-links']/a)[1]")
+    def sign_in_button(self):
+        return WebDriverWait(self.browser, 10).until(
+            EC.visibility_of_element_located(self.SIGN_IN))
 
     def email(self):
         return self.browser.find_element(By.XPATH, "//label[@for='email']")
@@ -29,7 +35,8 @@ class MoovSmartMain(GeneralPage):
         return self.browser.find_element(By.XPATH, ('//div[@class ="text-center"]'))
 
     def registration_button(self):
-        return self.browser.find_element(By.XPATH, "(//div[@class='my-navbar-right-links']/a)[2]")
+        return WebDriverWait(self.browser, 10).until(
+            EC.visibility_of_element_located(self.REGISTRATION))
 
     def registration_word(self):
         return self.browser.find_element(By.XPATH, ('//h3[@class="main-title"]'))
@@ -70,22 +77,28 @@ class MoovSmartMain(GeneralPage):
         search_button.click()
 
     def select_language(self, language):
-        Select(self.browser.find_element(By.XPATH, "//app-nav/select")).select_by_visible_text(language)
+        dropdown = WebDriverWait(self.browser, 10).until(
+            EC.element_to_be_clickable((By.XPATH, "//app-nav/select"))
+        )
+        Select(dropdown).select_by_visible_text(language)
 
     def get_search_placeholder(self):
         return self.browser.find_element(*self.SEARCH_INPUT).get_attribute("placeholder")
 
     def get_buy(self):
-        return self.browser.find_element(By.XPATH, "(//a[@class='navlink hover-underline-animation'])[1]")
+        return WebDriverWait(self.browser, 10).until(
+            EC.visibility_of_element_located((By.LINK_TEXT, "Buy")))
 
     def header_title(self):
         return self.browser.find_element(By.XPATH, '//div[@class="header-title"]')
 
     def main_header_title_sale(self):
-        return self.browser.find_element(By.XPATH, '//h3[@class="main-header-title" and contains(.,"Recent properties for Sale")]')
+        return self.browser.find_element(By.XPATH,
+                                         '//h3[@class="main-header-title" and contains(.,"Recent properties for Sale")]')
 
     def main_header_title_rent(self):
-        return self.browser.find_element(By.XPATH, '//h3[@class="main-header-title" and contains(.,"Recent properties for Rent")]')
+        return self.browser.find_element(By.XPATH,
+                                         '//h3[@class="main-header-title" and contains(.,"Recent properties for Rent")]')
 
     def for_sale_button(self):
         return self.browser.find_element(By.ID, "saleType")
@@ -94,18 +107,25 @@ class MoovSmartMain(GeneralPage):
         return self.browser.find_element(By.ID, "city")
 
     def search_button(self):
-        return self.browser.find_element(By.XPATH, '//button[@class="btn main-form-btn"]')
+        return WebDriverWait(self.browser, 10).until(
+            EC.visibility_of_element_located(self.SEARCH_BUTTON)
+        )
 
     def helymeghatarozok_szama(self):
-        return len(self.browser.find_elements(By.CSS_SELECTOR,"img.leaflet-marker-icon"))
+        return len(self.browser.find_elements(By.CSS_SELECTOR, "img.leaflet-marker-icon"))
 
     def helymeghatarozo(self):
-        return WebDriverWait(self.browser, 10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "img.leaflet-marker-icon")))
+        return WebDriverWait(self.browser, 10).until(
+            EC.visibility_of_element_located((By.CSS_SELECTOR, "img.leaflet-marker-icon")))
 
     def nincs_talalat_uzenet(self):
         try:
-            alert = self.browser.find_element(By.XPATH,"//*[contains(text(),'Nincs találat')]")
+            alert = self.browser.find_element(By.XPATH, "//*[contains(text(),'Nincs találat')]")
             return alert.is_displayed()
-            #ha megkapja a "nincs találat" üzenetet akkor igazt (True) ad vissza
+            # ha megkapja a "nincs találat" üzenetet akkor igazt (True) ad vissza
         except:
             return False
+
+    def property_type(self):
+        return WebDriverWait(self.browser, 10).until(
+            EC.visibility_of_element_located(self.PROPERTY_TYPE))

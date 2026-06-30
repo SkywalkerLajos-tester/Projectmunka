@@ -30,7 +30,7 @@ jobs:
     - name: Run docker-compose
       uses: hoverkraft-tech/compose-action@v2.0.1
       with:
-        compose-file: "./sprint2/compose.yaml"
+        compose-file: "./sprint1/compose.yaml"
 
     - name: Wait for 15 second an test services
       if: always()
@@ -54,7 +54,7 @@ jobs:
 
     - name: Test with pytest
       run: |
-        python -m pytest ./sprint2/POM/tests --alluredir=allure-results
+        python -m pytest ./sprint1/POM/tests --alluredir=allure-results
         
 
     - name: Allure Report action from marketplace

@@ -1,9 +1,0 @@
-{
-    "lastname": "5678",
-    "firstname": "1234",
-    "phone_number": "abcdefghij",
-    "email": "teszt_invalid@elek.hu",
-    "email_confirm": "teszt_invalid@elek.hu",
-    "password": "1234_Abcd",
-    "password_confirm": "1234_Abcd"
-}

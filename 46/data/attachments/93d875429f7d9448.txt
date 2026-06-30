@@ -1,3 +1,0 @@
-[Logged In] Nagy képernyő, sima kattintás a fejlécben.
-[POM] Kattintás a(z) '6000 Kecskemét, Szent Miklós street' ingatlan Edit gombjára.
-[POM] Ingatlan megtalálva a kódban, odagördülés az Edit gombhoz: 6000 Kecskemét, Szent Miklós street...

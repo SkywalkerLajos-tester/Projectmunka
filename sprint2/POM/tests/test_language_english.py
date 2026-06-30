@@ -25,8 +25,8 @@ class TestLanguageEnglish:
     @allure.tag("Positive", "Language - English", "Read")
     def test_language_english_main(self):
         home_page = MoovSmartMain(self.browser, BASE_URL)  # meghívjuk egy másik fájlból az ott definiált változókat
-        self.browser.maximize_window()
-        home_page.open_webpage()
+        # self.browser.maximize_window()
+        # home_page.open_webpage()
         home_page.select_language("English")
 
         assert home_page.get_buy().text == "Buy"  # ellenőrizzük, hogy a "buy" gombon "Buy" felirat van-e

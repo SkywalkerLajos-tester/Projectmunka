@@ -1,0 +1,4 @@
+
+[BUG] A 404-es oldal nem jelent meg nem létező ingatlan keresése után.
+[BUG] Elvárt: 404-es hibaoldal megjelenítése.
+[BUG] Tényleges: Az oldal nem ad visszajelzést a felhasználónak.

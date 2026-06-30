@@ -38,7 +38,7 @@ class TestUresKerese:
         home_page.select_language("Magyar")
         search_page = BasePage(self.browser)
 
-        search_page.search_location("Székesfehérvár, Budai út, 40. 8000, Hungary")
+        search_page.search_location("Székesfehérvár")
 
         assert home_page.helymeghatarozok_szama() == 0, \
             "Megjelent marker, pedig nem kellene."

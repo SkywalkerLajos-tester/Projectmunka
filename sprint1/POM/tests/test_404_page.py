@@ -23,7 +23,7 @@ class TestErrorPage:  # ez a teszt
     @allure.severity(allure.severity_level.CRITICAL)
     @allure.tag("Negative", "Read")
     def test_404_page(self):
-        self.main_page_a.search_for_address("Székesfehérvár")
+        self.main_page_a.search_for_address("Székesfehérvár, Budai út, 40. 8000, Hungary")
 
         is_displayed = self.error_page.is_404_displayed()
 

@@ -1,4 +1,5 @@
 import allure
+import time
 
 from sprint2.POM.page_models.base_page_a import BasePage
 from sprint2.POM.page_models.main_page_a import MoovSmartMain
@@ -28,6 +29,7 @@ class TestLanguageEnglish:
         self.browser.maximize_window()
         home_page.open_webpage()
         home_page.select_language("English")
+        time.sleep(1)
 
         assert home_page.get_buy().text == "Buy"  # ellenőrizzük, hogy a "buy" gombon "Buy" felirat van-e
         assert home_page.rent_button().text == "Rent"

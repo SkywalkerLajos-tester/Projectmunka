@@ -54,7 +54,7 @@ jobs:
 
     - name: Test with pytest
       run: |
-        python -m pytest ./sprint2/POM/tests/test_property_delete.py --alluredir=allure-results
+        python -m pytest ./sprint2/POM/tests --alluredir=allure-results
         
 
     - name: Allure Report action from marketplace

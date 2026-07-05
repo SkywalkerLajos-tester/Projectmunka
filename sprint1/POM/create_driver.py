@@ -7,7 +7,6 @@ from selenium.webdriver.chrome.options import Options
 #     options.add_argument('--guest')
 #     options.add_argument("--lang=hu")
 #     options.add_argument("--headless")
-#
 #     browser = webdriver.Chrome(options=options)
 #     browser.set_window_size(1920, 1080)
 #     return browser

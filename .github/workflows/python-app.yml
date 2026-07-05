@@ -30,7 +30,7 @@ jobs:
     - name: Run docker-compose
       uses: hoverkraft-tech/compose-action@v2.0.1
       with:
-        compose-file: "./sprint1/compose.yaml"
+        compose-file: "./sprint2/compose.yaml"
 
     - name: Wait for 15 second an test services
       if: always()
@@ -46,9 +46,15 @@ jobs:
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+    - name: Setup Chrome
+      uses: browser-actions/setup-chrome@v1
+      with:
+        chrome-version: stable
+
     - name: Test with pytest
       run: |
-        python -m pytest ./sprint1/POM/tests/test_property_delete.py --alluredir=allure-results
+        python -m pytest ./sprint2/POM/tests --alluredir=allure-results
         
 
     - name: Allure Report action from marketplace

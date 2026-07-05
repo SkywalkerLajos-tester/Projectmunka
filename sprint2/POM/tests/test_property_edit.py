@@ -230,101 +230,86 @@ class TestPropertyEdit:
         # az oldal NEM navigálhatott el, maradt a formon.
         assert "property-form" in current_url
 
+
     @allure.title("TC05 - Negatív eset: Mentési kísérlet negatív összegű árral.")
     @allure.severity(allure.severity_level.CRITICAL)
     @allure.tag("Negative", "Functional", "Property edit")
     @pytest.mark.parametrize(
-        "email, password, property_address, invalid_price, description",
+        "email, password, property_address, invalid_price",
         [
-            ("test3@test.hu", "1234_Abcd", "6000 Kecskemét, Szent Miklós street", "-5000",
-             "Save with negative price.")
+            ("test3@test.hu", "1234_Abcd", "6000 Kecskemét, Szent Miklós street", "-5000")
         ]
     )
-    def test_property_edit_error_negative_price(self, email, password, property_address, invalid_price, description):
+    def test_property_edit_error_negative_price(self, email, password, property_address, invalid_price):
         """TC05 - Negatív eset: Mentési kísérlet negatív összegű árral."""
         self.property_form_page._execute_login_my_properties(email, password, property_address)
 
-        # Kinyitjuk a Facts szekciót és negatív árat adunk meg
+        # 1. Facts szekció megnyitása és negatív ár megadása
         self.property_form_page.button_facts().click()
         self.property_form_page.input_price().clear()
         self.property_form_page.input_price().send_keys(invalid_price)
 
-        # Mentés
+        # 2. Mentés (a bug miatt a rendszer átenged és átirányít a listaoldalra)
         self.property_form_page.button_features().click()
         self.property_form_page.button_save_property().click()
 
-        time.sleep(0.5)
-        # current_url = self.property_form_page.get_current_url()
-
-        # Elvárás: Negatív árral sem navigálhat el, a formon kell maradnia
-        # assert "property-form" in current_url
-
-        # --- 2. ELLENŐRZÉS: Backend adatvédelem ---
-        # A teszted itt EL FOG BUKNI, mert a negative_price_saved True lesz!
+        # Megvárjuk, amíg a kártyák betöltenek a listaoldalon
         WebDriverWait(self.browser, 10).until(
             EC.presence_of_element_located(self.my_properties_page.property_cards)
         )
 
-        # Lekérjük az összes kártya szövegét
-        cards = self.my_properties_page.get_property_list_elements()
-        card_texts = [card.text for card in cards]
+        # 3. Kártyák szövegének beolvasása
+        card_texts = [card.text for card in self.my_properties_page.get_property_list_elements()]
 
-        # Ha benne van a "-" és az "5000" vagy "5,000" valamilyen formában
-        # A legbiztosabb, ha megnézzük, hogy a "-5" és "000" karakterláncok benne vannak-e a szövegben
-        negative_price_saved = any("-" in text and "5" in text and "000" in text for text in card_texts)
+        # A "-5000"-ből csinálunk "-5,000"-et, így pontosan arra keresünk, ami a képernyőn van
+        formatted_invalid_price = "-5,000"
 
-        assert not negative_price_saved, (
-            f"KRITIKUS RENDZERHIBA: A rendszer az adatbázisba is elmentette a negatív árat! "
-            f"A listában megjelent az érték! Látható kártya szövegek: {card_texts}"
+        # Csak azt a kártyát gyűjtjük ki, amin FIXEN ott van a "-5,000" szöveg
+        bad_cards = [text for text in card_texts if formatted_invalid_price in text]
+
+        # 4. ELLENŐRZÉS
+        assert not bad_cards, (
+            f"KRITIKUS RENDSZERHIBA: A rendszer elmentette és megjelenítette a negatív árat!\n"
+            f"A hibás ingatlan kártya tartalma:\n"
+            f"----------------------------------------\n"
+            f"{bad_cards[0]}\n"
+            f"----------------------------------------"
         )
 
-    @allure.title("TC06 - Negatív eset: Mentési kísérlet listából ki nem választott, érvénytelen címmel.")
-    @allure.severity(allure.severity_level.NORMAL)
+    @allure.title("TC06 - Negatív eset: Mentési kísérlet, érvénytelen címmel.")
+    @allure.severity(allure.severity_level.CRITICAL)
     @allure.tag("Negative", "Functional", "Property edit")
     @pytest.mark.parametrize(
-        "email, password, property_address, incomplete_address, description",
+        "email, password, property_address, incomplete_address",
         [
-            ("test3@test.hu", "1234_Abcd", "6000 Kecskemét, Szent Miklós street", "ValamiKamucim123"
-                 , "Save with invalid address.")
+            ("test3@test.hu", "1234_Abcd", "6000 Kecskemét, Szent Miklós street", "ValamiKamucim123")
         ]
     )
-    def test_property_edit_error_invalid_autocomplete(self, email, password, property_address, incomplete_address,
-                                                      description):
-        """TC06 - Negatív eset: Mentési kísérlet listából ki nem választott, érvénytelen címmel."""
+    def test_property_edit_error_invalid_autocomplete(self, email, password, property_address, incomplete_address):
+        """TC06 - Negatív eset: Mentési kísérlet, érvénytelen címmel."""
         self.property_form_page._execute_login_my_properties(email, password, property_address)
 
-        # Kinyitjuk a Location szekciót, beírunk egy nem létező szöveget, de nem kattintunk a listára
+        # 1. Location szekció megnyitása és kamu cím beírása (lista kihagyásával)
         self.property_form_page.button_location().click()
         address_input = self.property_form_page.input_address()
         address_input.clear()
         address_input.send_keys(incomplete_address)
 
-        # Hagyunk egy kis időt a formnak, majd megpróbáljuk elmenteni
-        time.sleep(0.5)
+        # 2. Mentési kísérlet
         self.property_form_page.button_features().click()
         self.property_form_page.button_save_property().click()
 
-        time.sleep(0.5)
+        # Várunk egy kicsit, hogy lássuk, elnavigál-e az oldalról
+        time.sleep(1)
         current_url = self.property_form_page.get_current_url()
 
-        # Elvárás: Mivel a cím nincs geokódolva/kiválasztva, a form érvénytelen, az oldalon kell maradnia
-        assert "property-form" in current_url
-
-        WebDriverWait(self.browser, 10).until(
-            EC.presence_of_element_located(self.my_properties_page.property_cards)
-        )
-
-        # Lekérjük az összes kártyát és azok szöveges tartalmát
-        cards = self.my_properties_page.get_property_list_elements()
-        card_texts = [card.text for card in cards]
-
-        # Megvizsgáljuk, hogy a beírt kamu szöveg megjelent-e bármelyik kártyán
-        invalid_address_saved = any(incomplete_address in text for text in card_texts)
-
-        # Elvárás: A kamu címnek NEM szabad szerepelnie a listában (Így ez az assert True-t kap, azaz PASSED lesz)
-        assert not invalid_address_saved, (
-            f"KRITIKUS BACKEND BUG: A rendszer az adatbázisba is elmentette a geokódolatlan kamu címet! "
-            f"A listában megjelent érték: '{incomplete_address}'. Látható kártyák: {card_texts}"
+        # 3. ELLENŐRZÉS
+        assert "property-form" in current_url, (
+            f"BUG DETEKTÁLVA: A rendszer érvénytelen cím ellenére továbbengedett az űrlapról!\n"
+            f"----------------------------------------\n"
+            f"Elvárt oldal:  *property-form* (Űrlap validációs hibával)\n"
+            f"Aktuális URL:  {current_url} (Listaoldal)\n"
+            f"----------------------------------------"
         )
 
     # ==========================================
